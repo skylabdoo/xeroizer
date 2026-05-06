@@ -33,6 +33,14 @@ module Xeroizer
     class UnknownError < OAuthError; end
 
     class RateLimitExceeded < OAuthError
+      # @api private
+      def self.from_headers(headers)
+        retry_after = (headers['retry-after'] || 0).to_i
+        daily_limit_remaining = (headers['x-daylimit-remaining'] || 0).to_i
+        description = "Rate limit exceeded: #{daily_limit_remaining} requests left for the day, #{retry_after} seconds until you can make another request"
+        new(description, retry_after: retry_after, daily_limit_remaining: daily_limit_remaining)
+      end
+
       def initialize(description, retry_after: nil, daily_limit_remaining: nil)
         super(description)
 
