@@ -4,9 +4,7 @@ require 'forwardable'
 require 'active_support/inflector'
 require "active_support/core_ext/array"
 require "active_support/core_ext/big_decimal/conversions"
-require 'oauth'
 require 'oauth2'
-require 'oauth/signature/rsa/sha1'
 require 'nokogiri'
 require 'builder'
 require 'time'
@@ -27,7 +25,6 @@ require 'xeroizer/record/base_model'
 require 'xeroizer/record/payroll_base_model'
 require 'xeroizer/record/base'
 require 'xeroizer/record/payroll_base'
-require 'xeroizer/configuration'
 require 'xeroizer/http_response'
 
 # Include models

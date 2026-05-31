@@ -18,16 +18,11 @@ module TestHelper
   # You can then run the tests against the test environment using the commands (linux or mac):
   # export STUB_XERO_CALLS=false
   # rake test
-  # (this probably won't work under OAuth?)
   #
 
   $VERBOSE=nil
 
   STUB_XERO_CALLS   = ENV["STUB_XERO_CALLS"].nil? ? true : (ENV["STUB_XERO_CALLS"] == "true") unless defined? STUB_XERO_CALLS
-
-  CONSUMER_KEY      = ENV["CONSUMER_KEY"]     || "fake_key"     unless defined?(CONSUMER_KEY)
-  CONSUMER_SECRET   = ENV["CONSUMER_SECRET"]  || "fake_secret"  unless defined?(CONSUMER_SECRET)
-  PRIVATE_KEY_PATH  = ENV["PRIVATE_KEY_PATH"] || "fake_key"     unless defined?(PRIVATE_KEY_PATH)
 
   CLIENT_ID     = ENV["XERO_CLIENT_ID"]     || "fake_client_id"     unless defined?(CLIENT_ID)
   CLIENT_SECRET = ENV["XERO_CLIENT_SECRET"] || "fake_client_secret" unless defined?(CLIENT_SECRET)

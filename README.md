@@ -676,7 +676,7 @@ Tests
 
 OAuth2 Tests
 
-The tests within the repository can be run by setting up a [OAuth2 App](https://developer.xero.com/documentation/guides/oauth2/auth-flow/).  You can create a Private App in the [developer portal](https://developer.xero.com/myapps/), it's suggested that you create it against the [Demo Company (AU)](https://developer.xero.com/documentation/getting-started/development-accounts). Demo Company expires after 28 days, so you will need to reset it and re-connect to it if your Demo Company has expired. Make sure you create the Demo Company in Australia region.
+The tests within the repository can be run by setting up a [OAuth2 App](https://developer.xero.com/documentation/guides/oauth2/auth-flow/).  You can create an app in the [developer portal](https://developer.xero.com/myapps/), it's suggested that you create it against the [Demo Company (AU)](https://developer.xero.com/documentation/getting-started/development-accounts). Demo Company expires after 28 days, so you will need to reset it and re-connect to it if your Demo Company has expired. Make sure you create the Demo Company in Australia region.
 
 ```
 export XERO_CLIENT_ID="asd"
