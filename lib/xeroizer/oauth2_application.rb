@@ -13,8 +13,7 @@ module Xeroizer
 
     public
 
-    # OAuth2 applications allow for connecting to Xero over OAuth2, as opposed to the
-    # Partner and Private applications which talk over OAuth1.
+    # Configures an OAuth2 client to connect to the Xero API.
     #
     # @param [String] client_id client id/token from application developer (found at http://api.xero.com for your application).
     # @param [String] client_secret client secret from application developer (found at http://api.xero.com for your application).

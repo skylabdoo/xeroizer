@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock"
   s.add_development_dependency "pry"
   s.add_dependency "builder", ">= 2.1.2"
-  s.add_dependency "oauth", ">= 0.4.5"
   s.add_dependency "oauth2", ">= 1.4.0"
   s.add_dependency "activesupport"
   s.add_dependency "nokogiri"
