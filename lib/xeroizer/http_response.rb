@@ -93,11 +93,7 @@ module Xeroizer
     end
 
     def raise_rate_limit_exceeded!
-      retry_after = response.response.headers["retry-after"].to_i
-      daily_limit_remaining = response.response.headers["x-daylimit-remaining"].to_i
-
-      description = "Rate limit exceeded: #{daily_limit_remaining} requests left for the day, #{retry_after} seconds until you can make another request"
-      raise OAuth::RateLimitExceeded.new(description, retry_after: retry_after, daily_limit_remaining: daily_limit_remaining)
+      raise OAuth::RateLimitExceeded.from_headers(response.response.headers)
     end
 
     def raise_unknown_response_error!

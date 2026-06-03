@@ -184,77 +184,330 @@ class HttpTest < UnitTestCase
           assert_equal 328, error.daily_limit_remaining
         end
       end
-    end
 
-    context "rate_limit_sleep with retry-after" do
-      setup do
-        @retry_after_seconds = 42
-        stub_request(:get, @uri).to_return(
-          status: 429,
-          body: "",
-          headers: {
-            "x-daylimit-remaining" => "328",
-            "retry-after" => @retry_after_seconds.to_s,
-          }
-        ).then.to_return(status: 200, body: "<Response/>")
-      end
+      context "rate_limit_sleep" do
+        context "raise_errors: false" do
+          setup do
+            @retry_after_seconds = 42
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "x-daylimit-remaining" => "328",
+                "retry-after" => @retry_after_seconds.to_s,
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
+          end
 
-      context "when rate_limit_sleep is true" do
-        setup do
-          @application = Xeroizer::OAuth2Application.new(
-            CLIENT_ID, CLIENT_SECRET,
-            tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
-            rate_limit_sleep: true
-          )
+          context "when rate_limit_sleep is true" do
+            setup do
+              @application = Xeroizer::OAuth2Application.new(
+                CLIENT_ID, CLIENT_SECRET,
+                tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+                rate_limit_sleep: true
+              )
+            end
+
+            should "sleep for the retry-after duration from the response and return the retried response body" do
+              @application.expects(:sleep_for).with(@retry_after_seconds)
+              result = @application.http_get(@application.client, @uri)
+              assert_equal "<Response/>", result
+            end
+          end
+
+          context "when rate_limit_sleep is a number" do
+            setup do
+              @application = Xeroizer::OAuth2Application.new(
+                CLIENT_ID, CLIENT_SECRET,
+                tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+                rate_limit_sleep: 5
+              )
+            end
+
+            should "sleep for the configured number of seconds and return the retried response body" do
+              @application.expects(:sleep_for).with(5)
+              result = @application.http_get(@application.client, @uri)
+              assert_equal "<Response/>", result
+            end
+          end
+
+          context "when rate_limit_sleep is a float" do
+            setup do
+              @application = Xeroizer::OAuth2Application.new(
+                CLIENT_ID, CLIENT_SECRET,
+                tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+                rate_limit_sleep: 2.5
+              )
+            end
+
+            should "sleep for the fractional number of seconds (preserves float precision)" do
+              @application.expects(:sleep_for).with(2.5)
+              result = @application.http_get(@application.client, @uri)
+              assert_equal "<Response/>", result
+            end
+          end
+
+          context "when rate_limit_sleep is true but retry-after is missing" do
+            setup do
+              WebMock.reset!
+              stub_request(:get, @uri).to_return(
+                status: 429,
+                body: "",
+                headers: {}
+              ).then.to_return(status: 200, body: "<Response/>")
+              @application = Xeroizer::OAuth2Application.new(
+                CLIENT_ID, CLIENT_SECRET,
+                tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+                rate_limit_sleep: true
+              )
+            end
+
+            should "fall back to sleeping for 1 second and return the retried response body" do
+              @application.expects(:sleep_for).with(1)
+              result = @application.http_get(@application.client, @uri)
+              assert_equal "<Response/>", result
+            end
+          end
+
+          context "when rate_limit_sleep is false" do
+            should "raise without retrying" do
+              assert_raises(Xeroizer::OAuth::RateLimitExceeded) {
+                @application.http_get(@application.client, @uri)
+              }
+            end
+          end
         end
 
-        should "sleep for the retry-after duration from the response" do
-          @application.expects(:sleep_for).with(@retry_after_seconds)
-          @application.http_get(@application.client, @uri)
-        end
-      end
+        context "raise_errors: true" do
+          setup do
+            @retry_after_seconds = 42
+            @application = Xeroizer::OAuth2Application.new(
+              CLIENT_ID, CLIENT_SECRET,
+              tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+              rate_limit_sleep: true,
+              raise_errors: true
+            )
+          end
 
-      context "when rate_limit_sleep is a number" do
-        setup do
-          @application = Xeroizer::OAuth2Application.new(
-            CLIENT_ID, CLIENT_SECRET,
-            tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
-            rate_limit_sleep: 5
-          )
-        end
+          should "catch OAuth2::Error on 429, retry with sleep, and return the retried response body" do
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => @retry_after_seconds.to_s,
+                "x-daylimit-remaining" => "328",
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
 
-        should "sleep for the configured number of seconds" do
-          @application.expects(:sleep_for).with(5)
-          @application.http_get(@application.client, @uri)
-        end
-      end
+            @application.expects(:sleep_for).with(@retry_after_seconds)
+            result = @application.http_get(@application.client, @uri)
+            assert_equal "<Response/>", result
+          end
 
-      context "when rate_limit_sleep is true but retry-after is missing" do
-        setup do
-          WebMock.reset!
-          stub_request(:get, @uri).to_return(
-            status: 429,
-            body: "",
-            headers: {}
-          ).then.to_return(status: 200, body: "<Response/>")
-          @application = Xeroizer::OAuth2Application.new(
-            CLIENT_ID, CLIENT_SECRET,
-            tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
-            rate_limit_sleep: true
-          )
-        end
+          context "when rate_limit_sleep is a number" do
+            setup do
+              @application = Xeroizer::OAuth2Application.new(
+                CLIENT_ID, CLIENT_SECRET,
+                tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+                rate_limit_sleep: 5,
+                raise_errors: true
+              )
+            end
 
-        should "fall back to sleeping for 1 second" do
-          @application.expects(:sleep_for).with(1)
-          @application.http_get(@application.client, @uri)
-        end
-      end
+            should "sleep for the configured number of seconds and return the retried response body" do
+              stub_request(:get, @uri).to_return(
+                status: 429,
+                body: "",
+                headers: {
+                  "retry-after" => "42",
+                  "x-daylimit-remaining" => "328",
+                }
+              ).then.to_return(status: 200, body: "<Response/>")
 
-      context "when rate_limit_sleep is false" do
-        should "raise without retrying" do
-          assert_raises(Xeroizer::OAuth::RateLimitExceeded) {
-            @application.http_get(@application.client, @uri)
-          }
+              @application.expects(:sleep_for).with(5)
+              result = @application.http_get(@application.client, @uri)
+              assert_equal "<Response/>", result
+            end
+          end
+
+          should "fall back to sleeping for 1 second when retry-after is missing" do
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {}
+            ).then.to_return(status: 200, body: "<Response/>")
+
+            @application.expects(:sleep_for).with(1)
+            result = @application.http_get(@application.client, @uri)
+            assert_equal "<Response/>", result
+          end
+
+          should "raise RateLimitExceeded after rate_limit_max_attempts is exceeded" do
+            @application = Xeroizer::OAuth2Application.new(
+              CLIENT_ID, CLIENT_SECRET,
+              tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+              rate_limit_sleep: true,
+              rate_limit_max_attempts: 1,
+              raise_errors: true
+            )
+
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "42",
+                "x-daylimit-remaining" => "328",
+              }
+            )
+
+            @application.expects(:sleep_for).with(42).once
+
+            error = assert_raises(Xeroizer::OAuth::RateLimitExceeded) {
+              @application.http_get(@application.client, @uri)
+            }
+            assert_equal 42, error.retry_after
+            assert_equal 328, error.daily_limit_remaining
+          end
+
+          should "raise RateLimitExceeded (not OAuth2::Error) when rate_limit_sleep is false" do
+            @application = Xeroizer::OAuth2Application.new(
+              CLIENT_ID, CLIENT_SECRET,
+              tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+              rate_limit_sleep: false,
+              raise_errors: true
+            )
+
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "42",
+                "x-daylimit-remaining" => "328",
+              }
+            )
+
+            error = assert_raises(Xeroizer::OAuth::RateLimitExceeded) {
+              @application.http_get(@application.client, @uri)
+            }
+            assert_equal 42, error.retry_after
+            assert_equal 328, error.daily_limit_remaining
+          end
+
+          should "re-raise OAuth2::Error for non-429 statuses" do
+            stub_request(:get, @uri).to_return(
+              status: 500,
+              body: "Server Error",
+              headers: {}
+            )
+
+            assert_raises(OAuth2::Error) {
+              @application.http_get(@application.client, @uri)
+            }
+          end
+
+          should "re-raise OAuth2::Error when the underlying response is nil (defensive guard)" do
+            # Defensive case: construct an OAuth2::Error whose response is nil.
+            # The oauth2 gem itself always wraps a response in practice, but the
+            # rescue's `exception.response &&` short-circuit must handle it
+            # without raising NoMethodError on `.status`.
+            nil_response_error = ::OAuth2::Error.new({})
+            nil_response_error.instance_variable_set(:@response, nil)
+
+            @application.expects(:with_around_request).raises(nil_response_error)
+
+            assert_raises(::OAuth2::Error) {
+              @application.http_get(@application.client, @uri)
+            }
+          end
+
+          should "retry POST with the same request body on 429" do
+            request_body = "<Payment><Amount>100.00</Amount></Payment>"
+            stub_request(:post, @uri).with(body: hash_including(xml: request_body)).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "1",
+                "x-daylimit-remaining" => "328",
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
+
+            @application.expects(:sleep_for).with(1)
+            result = @application.http_post(@application.client, @uri, request_body)
+            assert_equal "<Response/>", result
+            assert_requested(:post, @uri, body: hash_including(xml: request_body), times: 2)
+          end
+
+          should "retry PUT with the same request body on 429" do
+            request_body = "<Payment><Amount>100.00</Amount></Payment>"
+            stub_request(:put, @uri).with(body: hash_including(xml: request_body)).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "1",
+                "x-daylimit-remaining" => "328",
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
+
+            @application.expects(:sleep_for).with(1)
+            result = @application.http_put(@application.client, @uri, request_body)
+            assert_equal "<Response/>", result
+            assert_requested(:put, @uri, body: hash_including(xml: request_body), times: 2)
+          end
+
+          should "not serialize raw_body=true into POST URL" do
+            stub_request(:post, @uri).to_return(status: 200, body: "<Response/>")
+            @application.http_post(@application.client, @uri, "raw payload", raw_body: true)
+            assert_requested(:post, @uri) { |req| !req.uri.to_s.include?("raw_body") }
+          end
+
+          should "re-send a raw_body request as a raw body (not xml-wrapped) across a 429 retry" do
+            raw = "raw payload"
+            # Both the initial 429 and the retry must match the *raw* body. If the
+            # raw_body computation regressed back inside the retry loop, the retry
+            # would resend {:xml => ...} ("xml=raw+payload") instead, miss this
+            # stub, and WebMock would raise on the unstubbed request.
+            stub_request(:post, @uri).with(body: raw).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "1",
+                "x-daylimit-remaining" => "328",
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
+
+            @application.expects(:sleep_for).with(1)
+            result = @application.http_post(@application.client, @uri, raw, raw_body: true)
+            assert_equal "<Response/>", result
+            assert_requested(:post, @uri, body: raw, times: 2)
+            assert_requested(:post, @uri, times: 2) { |req| !req.uri.to_s.include?("raw_body") }
+          end
+
+          should "invoke after_request hook for 429 responses (observability symmetry)" do
+            after_request_calls = []
+            @application = Xeroizer::OAuth2Application.new(
+              CLIENT_ID, CLIENT_SECRET,
+              tenant_id: TENANT_ID, access_token: ACCESS_TOKEN,
+              rate_limit_sleep: true,
+              raise_errors: true,
+              after_request: proc { |request_info, response| after_request_calls << [request_info, response] }
+            )
+
+            stub_request(:get, @uri).to_return(
+              status: 429,
+              body: "",
+              headers: {
+                "retry-after" => "1",
+                "x-daylimit-remaining" => "328",
+              }
+            ).then.to_return(status: 200, body: "<Response/>")
+
+            @application.expects(:sleep_for).with(1)
+            result = @application.http_get(@application.client, @uri)
+            assert_equal "<Response/>", result
+            assert_equal 2, after_request_calls.length
+            assert_equal 429, after_request_calls.first.last.code
+            assert_equal 200, after_request_calls.last.last.code
+          end
         end
       end
     end

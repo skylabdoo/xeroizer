@@ -81,6 +81,11 @@ module Xeroizer
         end
       end
 
+      # Compute the request body once, before the retry loop, so retries
+      # send the same body on every attempt. Also done before URL building
+      # so :raw_body isn't serialized into the query string.
+      raw_body = params.delete(:raw_body) ? request_body : {:xml => request_body}
+
       if params.any?
         url += "?" + params.map {|key, value| "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"}.join("&")
       end
@@ -95,8 +100,6 @@ module Xeroizer
       begin
         attempts += 1
         logger.info("XeroGateway Request: #{method.to_s.upcase} #{uri.request_uri}") if self.logger
-
-        raw_body = params.delete(:raw_body) ? request_body : {:xml => request_body}
 
         response = with_around_request(request_info) do
           case method
@@ -116,19 +119,43 @@ module Xeroizer
         sleep_for(1)
         retry
       rescue Xeroizer::OAuth::RateLimitExceeded => exception
-        if self.rate_limit_sleep
-          raise if attempts > rate_limit_max_attempts
-          sleep_duration = if self.rate_limit_sleep == true
-                            (exception.retry_after && exception.retry_after > 0) ? exception.retry_after : 1
-                          else
-                            self.rate_limit_sleep
-                          end
-          logger.info("Rate limit exceeded, retrying in #{sleep_duration}s") if self.logger
-          sleep_for(sleep_duration)
-          retry
-        else
-          raise
-        end
+        sleep_duration = rate_limit_sleep_duration!(exception, attempts)
+        logger.warn(
+          "Rate limit exceeded (attempt #{attempts}/#{rate_limit_max_attempts}, " \
+          "retry_after=#{exception.retry_after}s, " \
+          "daily_remaining=#{exception.daily_limit_remaining}); " \
+          "sleeping #{sleep_duration}s before retry"
+        ) if self.logger
+        sleep_for(sleep_duration)
+        retry
+      rescue ::OAuth2::Error => exception
+        # When raise_errors: true is set on the OAuth2 client, the oauth2 gem
+        # raises OAuth2::Error for any non-2xx response before xeroizer's
+        # HttpResponse layer can inspect it. This means 429 responses never
+        # reach the normal RateLimitExceeded path above.
+        #
+        # This rescue intercepts those raw OAuth2::Error exceptions, converts
+        # 429s to RateLimitExceeded, and feeds them through the same retry
+        # logic so rate_limit_sleep works regardless of raise_errors setting.
+        raise unless exception.response && exception.response.status == 429
+
+        # Run the same observability hooks the raise_errors:false path runs,
+        # so log_response/after_request fire for both modes symmetrically.
+        wrapped_response = Xeroizer::OAuth2::Response.new(exception.response)
+        log_response(wrapped_response, uri)
+        after_request.call(request_info, wrapped_response) if after_request
+
+        rate_limit_exception = Xeroizer::OAuth::RateLimitExceeded.from_headers(exception.response.headers)
+        sleep_duration = rate_limit_sleep_duration!(rate_limit_exception, attempts)
+        logger.warn(
+          "Rate limit exceeded (intercepted OAuth2::Error, " \
+          "attempt #{attempts}/#{rate_limit_max_attempts}, " \
+          "retry_after=#{rate_limit_exception.retry_after}s, " \
+          "daily_remaining=#{rate_limit_exception.daily_limit_remaining}); " \
+          "sleeping #{sleep_duration}s before retry"
+        ) if self.logger
+        sleep_for(sleep_duration)
+        retry
       end
     end
 
@@ -151,6 +178,17 @@ module Xeroizer
 
     def sleep_for(seconds = 1)
       sleep seconds
+    end
+
+    def rate_limit_sleep_duration!(exception, attempts)
+      raise exception unless self.rate_limit_sleep
+      raise exception if attempts > rate_limit_max_attempts
+
+      if self.rate_limit_sleep == true
+        (exception.retry_after && exception.retry_after > 0) ? exception.retry_after : 1
+      else
+        [self.rate_limit_sleep.to_f, 0].max
+      end
     end
 
     # unitdp query string parameter to be added to request params
