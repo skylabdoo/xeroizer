@@ -13,13 +13,15 @@ module Xeroizer
         @payment_services ||= @application.http_get(@application.client, payment_services_endpoint(id))
       end
 
-      def add_payment_service(id:, payment_service_id:)
+      def add_payment_service(id:, payment_service_id:, idempotency_key: nil)
         b = Builder::XmlMarkup.new(:indent => 2)
         xml = b.tag!('PaymentService') do
           b.tag!('PaymentServiceID', payment_service_id)
         end
 
-        @application.http_post(@application.client, payment_services_endpoint(id), xml)
+        extra_params = Http.with_idempotency_key({}, idempotency_key)
+
+        @application.http_post(@application.client, payment_services_endpoint(id), xml, extra_params)
       end
 
       private
@@ -52,8 +54,8 @@ module Xeroizer
         parent.payment_services(id)
       end
 
-      def add_payment_service(payment_service_id)
-        parent.add_payment_service(id: id, payment_service_id: payment_service_id)
+      def add_payment_service(payment_service_id, idempotency_key: nil)
+        parent.add_payment_service(id: id, payment_service_id: payment_service_id, idempotency_key: idempotency_key)
       end
     end
 

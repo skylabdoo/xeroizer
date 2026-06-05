@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `company_number` attribute on Contact. (#559)
 - `edition` attribute on Organisation. (#564)
 - `batch_payment_id` attribute on Payment. (#568)
+- `idempotency_key:` on mutating requests, sent as `Idempotency-Key` header
+  so a retried write is not processed twice.
 
 ### Changed
 
@@ -77,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a retried request re-sends the same raw body instead of falling back to the
   `xml=`-wrapped form, and `:raw_body` is no longer serialized into the request
   query string.
+- The HTTP layer no longer mutates the request-options hash passed by the caller.
 - `BrandingTheme#add_payment_service` now builds its request body with `Builder`
   instead of ActiveSupport's `Hash#to_xml`, removing a hidden dependency on an
   ActiveSupport extension the gem never required.

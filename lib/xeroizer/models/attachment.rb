@@ -19,13 +19,36 @@ module Xeroizer
 
       set_permissions :read
 
+      # Upload attachment +data+ to a record and return the created Attachment.
+      #
+      # @param [String] url the parent record's attachments collection URL.
+      # @param [String] id the parent record's ID.
+      # @param [String] filename name to store the attachment under.
+      # @param [String] data the raw attachment bytes.
+      # @param [String] content_type the data's MIME type.
+      # @param [Hash] options
+      # @option options [Boolean] :include_online (false) sets Xero's IncludeOnline flag.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
       def attach_data(url, id, filename, data, content_type, options = {})
+        # content_type is required here, so a Hash never originates at this method — it
+        # arrives from the public Extensions helpers, where content_type IS optional:
+        # omitting it makes a trailing options hash (or a collapsed idempotency_key:)
+        # bind to this slot. All four such helpers funnel through this worker, so the
+        # arg is normalized once here at the chokepoint rather than in each helper.
+        content_type, options = "application/octet-stream", content_type if content_type.is_a?(Hash)
         options = { include_online: false }.merge(options)
+
+        extra_params = {
+          :raw_body => true,
+          :content_type => content_type,
+          "IncludeOnline" => options[:include_online]
+        }
+        extra_params = Http.with_idempotency_key(extra_params, options[:idempotency_key])
 
         response_xml = @application.http_put(@application.client,
                                               "#{url}/#{CGI.escape(id)}/Attachments/#{CGI.escape(filename)}",
                                               data,
-                                              :raw_body => true, :content_type => content_type, "IncludeOnline" => options[:include_online]
+                                              extra_params
                                              )
         response = parse_response(response_xml)
         if (response_items = response.response_items) && response_items.size > 0

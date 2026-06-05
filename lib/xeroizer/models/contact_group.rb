@@ -36,13 +36,21 @@ module Xeroizer
         @attributes[:status] = value
       end
 
-      def save!
-        super if new_record? or @modified
+      # @param [Hash] options forwarded to the record create/update.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+
+      #   header. The membership PUT is a separate request, so it gets a derived
+      #   <tt>"#{key}-contacts"</tt> key, keeping the whole save idempotent
+      #   under one caller key.
+      def save!(options = {})
+        # Derive the membership key before the primary save, so a bad key fails up front.
+        membership_key = @contacts ? derived_idempotency_key(options, "contacts") : nil
+        super(options) if new_record? or @modified
         @modified = false
         if @contacts
           req = cg_xml
           app = parent.application
-          res = app.http_put(app.client, "#{parent.url}/#{CGI.escape(id)}/Contacts", req)
+          extra_params = Http.with_idempotency_key({}, membership_key)
+          res = app.http_put(app.client, "#{parent.url}/#{CGI.escape(id)}/Contacts", req, extra_params)
           parse_save_response(res)
         end
       end

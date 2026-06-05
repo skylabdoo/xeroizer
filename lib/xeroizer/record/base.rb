@@ -107,20 +107,24 @@ module Xeroizer
           self
         end
 
-        def save
-          save!
+        # @param [Hash] options request options forwarded to the HTTP layer.
+        # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+        # @return [Boolean] true on success, false on a save failure (XeroizerError).
+        # @raise [ArgumentError] if :idempotency_key is invalid (callable/non-String/blank).
+        def save(options = {})
+          save!(options)
           true
         rescue XeroizerError => e
           log "[ERROR SAVING] (#{__FILE__}:#{__LINE__}) - #{e.message}"
           false
         end
 
-        def save!
+        def save!(options = {})
           raise RecordInvalid unless valid?
           if new_record?
-            create
+            create(options)
           else
-            update
+            update(options)
           end
 
           saved!
@@ -158,11 +162,11 @@ module Xeroizer
       protected
 
         # Attempt to create a new record.
-        def create
+        def create(options = {})
           request = to_xml
           log "[CREATE SENT] (#{__FILE__}:#{__LINE__}) #{request}"
 
-          response = parent.send(parent.create_method, request)
+          response = parent.send(parent.create_method, request, options)
 
           log "[CREATE RECEIVED] (#{__FILE__}:#{__LINE__}) #{response}"
 
@@ -170,7 +174,7 @@ module Xeroizer
         end
 
         # Attempt to update an existing record.
-        def update
+        def update(options = {})
           if self.class.possible_primary_keys && self.class.possible_primary_keys.all? { | possible_key | self[possible_key].nil? }
             raise RecordKeyMustBeDefined.new(self.class.possible_primary_keys)
           end
@@ -179,11 +183,33 @@ module Xeroizer
 
           log "[UPDATE SENT] (#{__FILE__}:#{__LINE__}) \r\n#{request}"
 
-          response = parent.http_post(request)
+          response = parent.http_post(request, options)
 
           log "[UPDATE RECEIVED] (#{__FILE__}:#{__LINE__}) \r\n#{response}"
 
           parse_save_response(response)
+        end
+
+        # Derives a distinct key for a compound save's secondary request (e.g. a
+        # credit-note allocation or contact-group membership PUT) by suffixing the
+        # caller's key. Reusing the same, caller supplied, key for the secondary
+        # request would be rejected by Xero.
+        # Validated before the primary request, so an invalid key fails the whole
+        # save up front.
+        def derived_idempotency_key(options, suffix)
+          key = Http.normalize_idempotency_key(options[:idempotency_key])
+          return nil if key.nil?
+
+          derived = "#{key}-#{suffix}"
+          if derived.length > Http::MAX_IDEMPOTENCY_KEY_LENGTH
+            max_base = Http::MAX_IDEMPOTENCY_KEY_LENGTH - suffix.length - 1
+            raise ArgumentError,
+              "idempotency_key is too long for this compound save: appending " \
+              "\"-#{suffix}\" makes the secondary request's key #{derived.length} characters, " \
+              "over Xero's #{Http::MAX_IDEMPOTENCY_KEY_LENGTH}-character limit. " \
+              "Use a base key of at most #{max_base} characters."
+          end
+          derived
         end
 
         # Parse the response from a create/update request.

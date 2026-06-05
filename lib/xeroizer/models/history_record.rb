@@ -8,8 +8,8 @@ module Xeroizer
           application.HistoryRecord.history(url, id)
         end
 
-        def add_note(id, details)
-          application.HistoryRecord.add_note(url, id, details)
+        def add_note(id, details, options = {})
+          application.HistoryRecord.add_note(url, id, details, options)
         end
       end
 
@@ -28,13 +28,14 @@ module Xeroizer
         response.response_items
       end
 
-      def add_note(url, id, details)
+      def add_note(url, id, details, options = {})
         record = build(details: details)
         xml = to_bulk_xml([record])
+        extra_params = Http.with_idempotency_key({ raw_body: true }, options[:idempotency_key])
         response_xml = @application.http_put(@application.client,
                                               "#{url}/#{CGI.escape(id)}/history",
                                               xml,
-                                              raw_body: true
+                                              extra_params
                                              )
         response = parse_response(response_xml)
         if (response_items = response.response_items) && response_items.size > 0
@@ -53,8 +54,8 @@ module Xeroizer
           parent.history(id)
         end
 
-        def add_note(details)
-          parent.add_note(id, details)
+        def add_note(details, options = {})
+          parent.add_note(id, details, options)
         end
       end
 

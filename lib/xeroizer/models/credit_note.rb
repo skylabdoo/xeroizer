@@ -135,18 +135,31 @@ module Xeroizer
           parent.pdf(id, filename)
         end
 
-        def save!
+        # @param [Hash] options forwarded to the credit-note create/update.
+        # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+        #   When allocations are present, #allocate runs automatically as a
+        #   separate request and gets a derived <tt>"#{key}-allocate"</tt> key,
+        #   keeping the whole save idempotent under one caller key.
+        def save!(options = {})
           # Calling parse_save_response() on the credit note will wipe out
           # the allocations, so we have to manually preserve them.
           allocations_backup = self.allocations
-          if super
+
+          # Derive the allocation key before the primary save, so a bad key fails up front.
+          allocation_key = allocations_backup.empty? ? nil : derived_idempotency_key(options, "allocate")
+          
+          if super(options)
             self.allocations = allocations_backup
-            allocate unless self.allocations.empty?
+            unless self.allocations.empty?
+              allocate(idempotency_key: allocation_key)
+            end
             true
           end
         end
 
-        def allocate
+        # @param [Hash] options request options; only :idempotency_key is used.
+        # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+        def allocate(options = {})
           if self.class.possible_primary_keys && self.class.possible_primary_keys.all? { | possible_key | self[possible_key].nil? }
             raise RecordKeyMustBeDefined.new(self.class.possible_primary_keys)
           end
@@ -154,8 +167,10 @@ module Xeroizer
           request = association_to_xml(:allocations)
           allocations_url = "#{parent.url}/#{CGI.escape(id)}/Allocations"
 
+          extra_params = Http.with_idempotency_key({}, options[:idempotency_key])
+
           log "[ALLOCATION SENT] (#{__FILE__}:#{__LINE__}) \r\n#{request}"
-          response = parent.application.http_put(parent.application.client, allocations_url, request)
+          response = parent.application.http_put(parent.application.client, allocations_url, request, extra_params)
           log "[ALLOCATION RECEIVED] (#{__FILE__}:#{__LINE__}) \r\n#{response}"
           parse_save_response(response)
         end
