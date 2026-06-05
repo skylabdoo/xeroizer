@@ -14,11 +14,10 @@ module Xeroizer
       end
 
       def add_payment_service(id:, payment_service_id:)
-        xml = {
-          PaymentService: {
-            PaymentServiceID: payment_service_id
-          }
-        }.to_xml
+        b = Builder::XmlMarkup.new(:indent => 2)
+        xml = b.tag!('PaymentService') do
+          b.tag!('PaymentServiceID', payment_service_id)
+        end
 
         @application.http_post(@application.client, payment_services_endpoint(id), xml)
       end
