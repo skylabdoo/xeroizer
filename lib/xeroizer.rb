@@ -4,6 +4,8 @@ require 'forwardable'
 require 'active_support/inflector'
 require "active_support/core_ext/array"
 require "active_support/core_ext/big_decimal/conversions"
+require "active_support/core_ext/object/blank"
+require "active_support/core_ext/object/try"
 require 'oauth2'
 require 'nokogiri'
 require 'builder'
