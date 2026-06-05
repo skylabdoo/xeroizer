@@ -135,6 +135,12 @@ class ValidatorsTest < Minitest::Test
       end
     end
 
+    should "treat a whitespace-only value as blank when allow_blanks is set" do
+      @record.type_blank = "   "
+      @record.valid?
+      assert_nil(@record.errors_for(:type_blank).first)
+    end
+
   end
 
   context "presence validator" do
@@ -149,6 +155,16 @@ class ValidatorsTest < Minitest::Test
       @record.valid?
       error = @record.errors_for(:name).first
       assert_nil(error)
+    end
+
+    should "treat a whitespace-only value as blank" do
+      @record.name = "   "
+      assert_equal(false, @record.valid?)
+      assert_equal('blank', @record.errors_for(:name).first)
+
+      @record.name = " x "
+      @record.valid?
+      assert_nil(@record.errors_for(:name).first)
     end
 
     should "have name if value is 10" do

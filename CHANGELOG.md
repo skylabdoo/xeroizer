@@ -46,6 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   resolve to ancient, EOL releases that fail to load on modern Ruby).
 - Minimum supported Ruby is now 3.1 (`required_ruby_version >= 3.1`); RubyGems
   refuses to install the gem on older Rubies.
+- `validates_presence_of` and `validates_inclusion_of` (with `:allow_blanks => true`)
+  now treat whitespace-only strings as blank, delegating to ActiveSupport's `blank?`
+  (previously only `nil` and `""` counted).
 
 ### Removed
 

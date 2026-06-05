@@ -6,7 +6,7 @@ module Xeroizer
       class PresenceOfValidator < Validator
         
         def valid?(record)
-          if record[attribute].nil? || record[attribute].to_s == ''
+          if record[attribute].blank?
             record.errors << [attribute, options[:message] || "can't be blank"]
           end
         end
