@@ -113,11 +113,6 @@ module Xeroizer
         after_request.call(request_info, response) if after_request
 
         HttpResponse.from_response(response, request_body, url).body
-      rescue Xeroizer::OAuth::NonceUsed => exception
-        raise if attempts > nonce_used_max_attempts
-        logger.info("Nonce used: " + exception.to_s) if self.logger
-        sleep_for(1)
-        retry
       rescue Xeroizer::OAuth::RateLimitExceeded => exception
         sleep_duration = rate_limit_sleep_duration!(exception, attempts)
         logger.warn(

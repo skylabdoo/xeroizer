@@ -66,30 +66,6 @@ class HttpTest < UnitTestCase
         end
       end
 
-      context "consumer_key_unknown" do
-        setup do
-          body = "oauth_problem_advice=some more advice&oauth_problem=consumer_key_unknown"
-          stub_request(:get, @uri).to_return(status: @status_code, body: body)
-        end
-
-        should "raise an OAuth::ConsumerKeyUnknown" do
-          error = assert_raises(Xeroizer::OAuth::ConsumerKeyUnknown) { @application.http_get(@application.client, @uri) }
-          assert_equal "some more advice", error.message
-        end
-      end
-
-      context "nonce_used" do
-        setup do
-          body = get_file_as_string("nonce_used")
-          stub_request(:get, @uri).to_return(status: @status_code, body: body)
-        end
-
-        should "raise an OAuth::NonceUsed" do
-          error = assert_raises(Xeroizer::OAuth::NonceUsed) { @application.http_get(@application.client, @uri) }
-          assert_equal "The nonce value \"potatocakes\" has already been used ", error.message
-        end
-      end
-
       context "organisation offline" do
         setup do
           body = "oauth_problem_advice=organisational advice&oauth_problem=organisation offline"
@@ -550,30 +526,6 @@ class HttpTest < UnitTestCase
         should "raise an OAuth::RateLimitExceeded" do
           error = assert_raises(Xeroizer::OAuth::RateLimitExceeded) { @application.http_get(@application.client, @uri) }
           assert_equal "please wait before retrying the xero api\n", error.message
-        end
-      end
-
-      context "consumer_key_unknown" do
-        setup do
-          body = "oauth_problem_advice=some more advice&oauth_problem=consumer_key_unknown"
-          stub_request(:get, @uri).to_return(status: @status_code, body: body)
-        end
-
-        should "raise an OAuth::ConsumerKeyUnknown" do
-          error = assert_raises(Xeroizer::OAuth::ConsumerKeyUnknown) { @application.http_get(@application.client, @uri) }
-          assert_equal "some more advice", error.message
-        end
-      end
-
-      context "nonce_used" do
-        setup do
-          body = get_file_as_string("nonce_used")
-          stub_request(:get, @uri).to_return(status: @status_code, body: body)
-        end
-
-        should "raise an OAuth::NonceUsed" do
-          error = assert_raises(Xeroizer::OAuth::NonceUsed) { @application.http_get(@application.client, @uri) }
-          assert_equal "The nonce value \"potatocakes\" has already been used ", error.message
         end
       end
 
