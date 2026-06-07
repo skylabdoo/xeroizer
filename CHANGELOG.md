@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- The dead `Net::HTTPResponse#plain_body` monkeypatch (`http_encoding_helper.rb`);
+  responses use the `Xeroizer::OAuth2::Response` wrapper's `plain_body`.
 - OAuth 1.0a transport support (#574). The `oauth` gem is no longer a dependency,
   and `Xeroizer::OAuthConfig` / `Xeroizer::OAuthCredentials` and the OAuth1 methods
   on `Xeroizer::OAuth` are gone. OAuth 2.0 is unaffected.
