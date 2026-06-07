@@ -20,8 +20,6 @@ module Xeroizer
     class OAuthError < XeroizerError; end
     class TokenExpired < OAuthError; end
     class TokenInvalid < OAuthError; end
-    class ConsumerKeyUnknown < OAuthError; end
-    class NonceUsed < OAuthError; end
     class OrganisationOffline < OAuthError; end
     class Forbidden < OAuthError; end
     class UnknownError < OAuthError; end

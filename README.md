@@ -606,25 +606,6 @@ When set to `true`, the library uses the `Retry-After` value from the API
 response to determine how long to wait. When set to a number, it always
 sleeps for that many seconds instead.
 
-Xero API Nonce Used
--------------------
-
-The Xero API seems to reject requests due to conflicts on occasion.
-
-By default, the library will raise a `Xeroizer::OAuth::NonceUsed`
-exception when one of these limits is exceeded.
-
-If required, the library can handle these exceptions internally by sleeping 1 second and then repeating the last request.
-You can set this option when initializing an application:
-
-```ruby
-# Sleep for 1 second and retry up to 3 times when Xero claims the nonce was used.
-client = Xeroizer::OAuth2Application.new(YOUR_OAUTH2_CLIENT_ID,
-                                         YOUR_OAUTH2_CLIENT_SECRET,
-                                         :nonce_used_max_attempts => 3)
-```
-
-
 Logging
 ---------------
 

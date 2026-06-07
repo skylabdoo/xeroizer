@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   raw `OAuth2::Error` for consumers running the OAuth2 client with
   `raise_errors: true`. Update any rescue chains accordingly.
   Non-429 `OAuth2::Error`s are unaffected and still propagate unchanged.
+- The `nonce_used_max_attempts` option and its reader were removed;
+  `app.nonce_used_max_attempts` now raises `NoMethodError`.
 
 ### Added
 
@@ -37,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   logging hooks now fire for 429 responses (they previously could not, because
   the `oauth2` gem raised before xeroizer's response layer ran). This keeps
   observability consistent across both `raise_errors` modes.
+
+### Removed
+
+- OAuth 1.0a transport support (#574). The `oauth` gem is no longer a dependency,
+  and `Xeroizer::OAuthConfig` / `Xeroizer::OAuthCredentials` and the OAuth1 methods
+  on `Xeroizer::OAuth` are gone. OAuth 2.0 is unaffected.
+- The OAuth 1.0a-only error classes `Xeroizer::OAuth::ConsumerKeyUnknown` and
+  `Xeroizer::OAuth::NonceUsed`, their error mappings, the nonce-reuse retry, and the
+  `nonce_used_max_attempts` option that configured it.
 
 ### Fixed
 
