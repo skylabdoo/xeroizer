@@ -99,7 +99,7 @@ class XeroSessionController < ApplicationController
 			if session[:xero_auth]
 				@xero_client.tenant_id = session[:xero_auth][:tenant_id]
 
-				@xero_client.authorize_from_access(session[:xero_auth][:acesss_token])
+				@xero_client.authorize_from_access(session[:xero_auth][:access_token])
 			end
 		end
 end
@@ -313,7 +313,7 @@ in the resulting response, including all nested XML elements.
 
 **Example 4: Retrieve all Invoices using Paging (batches of 100)**
 
-		invoices = xero.Invoice.find_in_batches({page_number: 1}) do |invoice_batch|
+		invoices = xero.Invoice.find_in_batches({page: 1}) do |invoice_batch|
 		  invoice_batch.each do |invoice|
 		    ...
 		  end
