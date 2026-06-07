@@ -10,6 +10,7 @@ require 'builder'
 require 'time'
 require 'bigdecimal'
 require 'cgi'
+require 'json'
 
 $: << File.expand_path(File.dirname(__FILE__))
 

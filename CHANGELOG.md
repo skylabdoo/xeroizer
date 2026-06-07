@@ -57,6 +57,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a retried request re-sends the same raw body instead of falling back to the
   `xml=`-wrapped form, and `:raw_body` is no longer serialized into the request
   query string.
+- `BrandingTheme#add_payment_service` now builds its request body with `Builder`
+  instead of ActiveSupport's `Hash#to_xml`, removing a hidden dependency on an
+  ActiveSupport extension the gem never required.
+- `lib/xeroizer` now requires `json` explicitly rather than relying on it being
+  loaded transitively by another gem.
 
 ## 3.0.1
 
