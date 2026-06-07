@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `oauth2` now requires `>= 2.0", "< 3.0`; the client uses oauth2 2.x request
+  and error semantics. The previous `>= 1.4.0` floor allowed 1.x, which would
+  mis-send request bodies.
 - `LineItem#line_item_id` is now a guid, producing `LineItemID` in XML to match Xero's case-sensitive parsing. (#562)
 - `rate_limit_sleep: true` now respects the `Retry-After` response header. (#569)
 - `rate_limit_sleep` now also works under `raise_errors: true`.

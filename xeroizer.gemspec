@@ -24,18 +24,18 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -- test/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_development_dependency "bundler", "~> 2.2"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
   s.add_development_dependency "shoulda", "~> 3.6.0"
   s.add_development_dependency "test-unit"
-  s.add_development_dependency "ansi"
   s.add_development_dependency "redcarpet"
   s.add_development_dependency "yard"
   s.add_development_dependency "webmock"
   s.add_development_dependency "pry"
+  s.add_development_dependency "rdoc"
   s.add_dependency "builder", ">= 2.1.2"
-  s.add_dependency "oauth2", ">= 1.4.0"
+  s.add_dependency "oauth2", ">= 2.0", "< 3.0"
   s.add_dependency "activesupport", ">= 5.2"
   s.add_dependency "nokogiri"
   s.add_dependency "tzinfo"
