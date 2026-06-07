@@ -112,7 +112,13 @@ module Xeroizer
                 end
                 b.tag!(field[:api_name], real_value)
 
-              when :datetime    then b.tag!(field[:api_name], value.utc.strftime("%Y-%m-%dT%H:%M:%S"))
+              when :datetime
+                real_value = case value
+                  when Time, DateTime then value.utc.strftime("%Y-%m-%dT%H:%M:%S")
+                  when NilClass       then nil
+                  else raise ArgumentError.new("Expected Time or DateTime object for the #{field[:api_name]} field")
+                end
+                b.tag!(field[:api_name], real_value)
               when :belongs_to
                 value.to_xml(b)
                 nil

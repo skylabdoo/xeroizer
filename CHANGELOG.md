@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OAuth error response (401/403/503) parsing on Ruby 4.0, where `CGI.parse` was removed.
 - Models without `set_permissions` now raise `MethodNotAllowed` on read instead
   of `NoMethodError` (e.g. `Schedule`).
+- `:datetime` fields serialize `nil` as an empty element and raise a clear
+  `ArgumentError` for non-time values, matching `:date`.
 - The gem now requires `active_support/core_ext/object/blank` and `.../object/try`
   explicitly; it used `blank?`/`present?`/`try` but only loaded them transitively,
   which broke on modern ActiveSupport outside Rails.
