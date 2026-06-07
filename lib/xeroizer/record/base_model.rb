@@ -50,6 +50,11 @@ module Xeroizer
           end
         end
 
+        # Models that never call set_permissions have nil permissions; treat as not permitted.
+        def permission?(action)
+          (permissions || {})[action]
+        end
+
         # Method to allow override of the default XML node name.
         #
         # Default: singularized model name in camel-case.
@@ -118,7 +123,7 @@ module Xeroizer
 
       # Retrieve full record list for this model.
       def all(options = {})
-        raise MethodNotAllowed.new(self, :all) unless self.class.permissions[:read]
+        raise MethodNotAllowed.new(self, :all) unless self.class.permission?(:read)
         response_xml = http_get(parse_params(options))
         response = parse_response(response_xml, options)
         response.response_items || []
@@ -141,14 +146,14 @@ module Xeroizer
       # Helper method to retrieve just the first element from
       # the full record list.
       def first(options = {})
-        raise MethodNotAllowed.new(self, :all) unless self.class.permissions[:read]
+        raise MethodNotAllowed.new(self, :all) unless self.class.permission?(:read)
         result = all(options)
         result.first if result.is_a?(Array)
       end
 
       # Retrieve record matching the passed in ID.
       def find(id, options = {})
-        raise MethodNotAllowed.new(self, :all) unless self.class.permissions[:read]
+        raise MethodNotAllowed.new(self, :all) unless self.class.permission?(:read)
         response_xml = @application.http_get(@application.client, "#{url}/#{CGI.escape(id)}", options)
         response = parse_response(response_xml, options)
         result = response.response_items.first if response.response_items.is_a?(Array)
@@ -236,16 +241,6 @@ module Xeroizer
         builder.tag!(tag) do
           records.each {|r| r.to_xml(builder) }
         end
-      end
-
-      # Parse the response from a create/update request.
-      def parse_save_response(response_xml)
-        response = parse_response(response_xml)
-        record = response.response_items.first if response.response_items.is_a?(Array)
-        if record && record.is_a?(self.class)
-          @attributes = record.attributes
-        end
-        self
       end
     end
 
