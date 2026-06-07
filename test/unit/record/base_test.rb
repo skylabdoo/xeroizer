@@ -148,7 +148,9 @@ class RecordBaseTest < Test::Unit::TestCase
 
     context 'api error received' do
       setup do
-        response = get_file_as_string('api_exception.xml')
+        # Xero declares these error bodies utf-16 but encodes them utf-8; strip the
+        # declaration so Nokogiri parses it, as XmlErrorResponse does for real responses.
+        response = get_file_as_string('api_exception.xml').sub('<?xml version="1.0" encoding="utf-16"?>', '')
         doc = Nokogiri::XML(response)
         exception = Xeroizer::ApiException.new(doc.root.xpath("Type").text,
                                                doc.root.xpath("Message").text,
