@@ -1,3 +1,5 @@
+require 'uri'
+
 module Xeroizer
   class BadResponse < XeroizerError; end
 
@@ -52,10 +54,11 @@ module Xeroizer
     attr_reader :request_body, :response, :url
 
     def parse
-      error_details = CGI.parse(response.plain_body)
-      description   = error_details["oauth_problem_advice"].first
-      problem = error_details["oauth_problem"].first
-      [description, problem]
+      fields = URI.decode_www_form(response.plain_body).to_h
+      [fields["oauth_problem_advice"], fields["oauth_problem"]]
+    rescue ArgumentError
+      # Non-form bodies (e.g. plain-text 503 pages) carry no oauth_problem fields.
+      [nil, nil]
     end
 
     def raise_bad_request!

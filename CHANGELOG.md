@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- OAuth error response (401/403/503) parsing on Ruby 4.0, where `CGI.parse` was removed.
 - The gem now requires `active_support/core_ext/object/blank` and `.../object/try`
   explicitly; it used `blank?`/`present?`/`try` but only loaded them transitively,
   which broke on modern ActiveSupport outside Rails.
@@ -67,6 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ActiveSupport extension the gem never required.
 - `lib/xeroizer` now requires `json` explicitly rather than relying on it being
   loaded transitively by another gem.
+- `lib/xeroizer` requires `cgi/escape` instead of the full `cgi` library (removed
+  in Ruby 4.0) for the `CGI.escape` calls it makes.
 
 ## 3.0.1
 
