@@ -4,7 +4,6 @@ require 'test/unit'
 require 'mocha'
 require 'shoulda'
 require 'pp'
-require 'pry'
 
 require File.dirname(__FILE__) + '/../lib/xeroizer.rb'
 

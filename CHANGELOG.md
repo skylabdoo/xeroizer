@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `oauth2` now requires `>= 2.0", "< 3.0`; the client uses oauth2 2.x request
+  and error semantics. The previous `>= 1.4.0` floor allowed 1.x, which would
+  mis-send request bodies.
 - `LineItem#line_item_id` is now a guid, producing `LineItemID` in XML to match Xero's case-sensitive parsing. (#562)
 - `rate_limit_sleep: true` now respects the `Retry-After` response header. (#569)
 - `rate_limit_sleep` now also works under `raise_errors: true`.
@@ -44,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- The dead `Net::HTTPResponse#plain_body` monkeypatch (`http_encoding_helper.rb`);
+  responses use the `Xeroizer::OAuth2::Response` wrapper's `plain_body`.
 - OAuth 1.0a transport support (#574). The `oauth` gem is no longer a dependency,
   and `Xeroizer::OAuthConfig` / `Xeroizer::OAuthCredentials` and the OAuth1 methods
   on `Xeroizer::OAuth` are gone. OAuth 2.0 is unaffected.
@@ -53,6 +58,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- OAuth error response (401/403/503) parsing on Ruby 4.0, where `CGI.parse` was removed.
+- Models without `set_permissions` now raise `MethodNotAllowed` on read instead
+  of `NoMethodError` (e.g. `Schedule`).
+- `:datetime` fields serialize `nil` as an empty element and raise a clear
+  `ArgumentError` for non-time values, matching `:date`.
 - The gem now requires `active_support/core_ext/object/blank` and `.../object/try`
   explicitly; it used `blank?`/`present?`/`try` but only loaded them transitively,
   which broke on modern ActiveSupport outside Rails.
@@ -67,6 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ActiveSupport extension the gem never required.
 - `lib/xeroizer` now requires `json` explicitly rather than relying on it being
   loaded transitively by another gem.
+- `lib/xeroizer` requires `cgi/escape` instead of the full `cgi` library (removed
+  in Ruby 4.0) for the `CGI.escape` calls it makes.
 
 ## 3.0.1
 

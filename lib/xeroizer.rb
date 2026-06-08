@@ -11,7 +11,7 @@ require 'nokogiri'
 require 'builder'
 require 'time'
 require 'bigdecimal'
-require 'cgi'
+require 'cgi/escape'
 require 'json'
 
 $: << File.expand_path(File.dirname(__FILE__))
@@ -20,7 +20,6 @@ require 'class_level_inheritable_attributes'
 require 'xeroizer/exceptions'
 require 'xeroizer/oauth'
 require 'xeroizer/oauth2'
-require 'xeroizer/http_encoding_helper'
 require 'xeroizer/http'
 require 'xeroizer/connection'
 
