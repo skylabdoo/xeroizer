@@ -5,7 +5,7 @@ module Xeroizer
         def valid?(record)
           fail "No block provided" unless options[:block]
           
-          result = record.instance_eval &options[:block]
+          result = record.instance_eval(&options[:block])
           
           record.errors << [attribute, message] unless result == true
         end
