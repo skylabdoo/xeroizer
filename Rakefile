@@ -1,5 +1,5 @@
 require 'rake'
-require 'rake/testtask'
+require 'minitest/test_task'
 require 'rdoc/task'
 require 'rubygems'
 require 'yard'
@@ -8,26 +8,20 @@ require 'bundler/gem_tasks'
 desc 'Default: run unit tests.'
 task :default => :test
 
-desc 'Test the xero gateway.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << ['lib', 'test']
-  t.pattern = 'test/unit/**/*_test.rb'
-  t.verbose = true
+desc 'Run unit tests.'
+Minitest::TestTask.create(:test) do |t|
+  t.test_globs = ['test/unit/**/*_test.rb']
 end
 
 namespace :test do
   desc 'Run acceptance/integration tests'
-  Rake::TestTask.new(:acceptance) do |t|
-    t.libs << ['lib', 'test']
-    t.pattern = 'test/acceptance/**/*_test.rb'
-    t.verbose = true
+  Minitest::TestTask.create(:acceptance) do |t|
+    t.test_globs = ['test/acceptance/**/*_test.rb']
   end
 
   desc 'Run unit tests'
-  Rake::TestTask.new(:unit) do |t|
-    t.libs << ['lib', 'test']
-    t.pattern = 'test/unit/**/*_test.rb'
-    t.verbose = true
+  Minitest::TestTask.create(:unit) do |t|
+    t.test_globs = ['test/unit/**/*_test.rb']
   end
 end
 
