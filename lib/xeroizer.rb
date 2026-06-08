@@ -1,6 +1,14 @@
 require 'rubygems'
 require 'date'
 require 'forwardable'
+# Load the deprecation framework before cherry-picking core_ext: some versions
+# emit a deprecation at load time (e.g. AS 7.1 array, AS 8.2 time), which needs
+# ActiveSupport::Deprecation + ActiveSupport.deprecator already defined.
+require 'active_support/deprecation'
+begin
+  require 'active_support/deprecator' # added in AS 7.1; absent on 7.0, which has no load-time deprecator use
+rescue LoadError
+end
 require 'active_support/inflector'
 require "active_support/core_ext/array"
 require "active_support/core_ext/big_decimal/conversions"

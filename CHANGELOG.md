@@ -42,8 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   logging hooks now fire for 429 responses (they previously could not, because
   the `oauth2` gem raised before xeroizer's response layer ran). This keeps
   observability consistent across both `raise_errors` modes.
-- `activesupport` now requires `>= 5.2` (previously unconstrained, which let it
-  resolve to ancient releases that fail to load on Ruby 3.2+).
+- `activesupport` now requires `>= 7.0` (previously unconstrained, which let it
+  resolve to ancient, EOL releases that fail to load on modern Ruby).
+- Minimum supported Ruby is now 3.1 (`required_ruby_version >= 3.1`); RubyGems
+  refuses to install the gem on older Rubies.
 
 ### Removed
 
@@ -66,6 +68,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The gem now requires `active_support/core_ext/object/blank` and `.../object/try`
   explicitly; it used `blank?`/`present?`/`try` but only loaded them transitively,
   which broke on modern ActiveSupport outside Rails.
+- Loads ActiveSupport's deprecation framework before its core extensions,
+  preventing a load-time crash on ActiveSupport versions that emit a deprecation
+  from a cherry-picked file (e.g. 8.2).
 - `#attributes=` now raises the same clear `undefined method` error as `.build` when given an invalid attribute name. (#570)
 - Avoid an extra API call when accessing allocations from a credit note. (#554)
 - A `raw_body: true` request body is now computed once before the retry loop, so
