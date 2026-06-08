@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class ReportDefinitionTest < Test::Unit::TestCase
+class ReportDefinitionTest < Minitest::Test
   include TestHelper
 
   def setup

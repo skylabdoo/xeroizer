@@ -1,9 +1,9 @@
 require 'unit_test_helper'
 
-class GenericApplicationTest < Test::Unit::TestCase
+class GenericApplicationTest < Minitest::Test
   include TestHelper
 
-  setup do
+  def setup
     @headers = {"User-Agent" => "Xeroizer/2.15.5"}
     @unitdp = 4
     @options = {

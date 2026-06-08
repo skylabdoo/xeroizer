@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class BlockValidatorTest < Test::Unit::TestCase
+class BlockValidatorTest < Minitest::Test
   def setup
     @fake_record_class = Class.new do
       attr_accessor :errors

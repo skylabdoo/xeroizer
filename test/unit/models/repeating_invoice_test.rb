@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class RepeatingInvoiceTest < Test::Unit::TestCase
+class RepeatingInvoiceTest < Minitest::Test
   include TestHelper
 
   def setup

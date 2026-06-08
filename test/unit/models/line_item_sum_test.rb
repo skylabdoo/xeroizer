@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class LineItemSumTest < Test::Unit::TestCase
+class LineItemSumTest < Minitest::Test
   include Xeroizer::Record
 
   def setup

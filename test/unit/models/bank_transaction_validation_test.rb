@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class BankTransactionValidationTest < Test::Unit::TestCase
+class BankTransactionValidationTest < Minitest::Test
   include Xeroizer::Record
 
   must "supply either SPEND or RECEIVE as the type" do

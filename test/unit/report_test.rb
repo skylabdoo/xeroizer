@@ -2,7 +2,7 @@ require 'unit_test_helper'
 
 class MockNonReportClassDefinition; end
 
-class FactoryTest < Test::Unit::TestCase
+class FactoryTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -37,7 +37,7 @@ class FactoryTest < Test::Unit::TestCase
     end
 
     should "have valid rows" do
-      assert_not_equal(0, @report.rows.size)
+      refute_equal(0, @report.rows.size)
       @report.rows.each do | row |
         assert_kind_of(Xeroizer::Report::Row, row)
         assert(%w(Header Row SummaryRow Section).include?(row.type), "'#{row.type}' is not a valid row type.")
@@ -47,7 +47,7 @@ class FactoryTest < Test::Unit::TestCase
     should "have cells and no rows if not Section" do
       @report.rows.each do | row |
         if row.type != 'Section'
-          assert_not_equal(0, row.cells.size)
+          refute_equal(0, row.cells.size)
           assert_equal(0, row.rows.size)
         end
       end
@@ -57,7 +57,7 @@ class FactoryTest < Test::Unit::TestCase
       @report.rows.each do | row |
         if row.type == 'Section'
           assert_equal(0, row.cells.size)
-          assert_not_equal(0, row.rows.size)
+          refute_equal(0, row.rows.size)
         end
       end
     end
@@ -80,7 +80,7 @@ class FactoryTest < Test::Unit::TestCase
           counter += assess_row(row)
         end
       end
-      assert_not_equal(0, counter, "at least one converted number in the report should be greater than 0")
+      refute_equal(0, counter, "at least one converted number in the report should be greater than 0")
     end
 
     should "be at least one Section row with a title" do
@@ -88,7 +88,7 @@ class FactoryTest < Test::Unit::TestCase
       @report.rows.each do | row |
         counter += 1 if row.section? && row.title.to_s != ''
       end
-      assert_not_equal(0, counter, "at least one row with type 'Section' should have a title")
+      refute_equal(0, counter, "at least one row with type 'Section' should have a title")
     end
 
     should "have working report type helpers" do
@@ -108,7 +108,7 @@ class FactoryTest < Test::Unit::TestCase
     end
 
     should "have sections" do
-      assert_not_equal(0, @report.sections)
+      refute_equal(0, @report.sections)
       @report.sections.each do | section |
         assert_kind_of(Xeroizer::Report::SectionRow, section)
       end

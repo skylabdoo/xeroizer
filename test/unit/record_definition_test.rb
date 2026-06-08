@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class RecordDefinitionTest < Test::Unit::TestCase
+class RecordDefinitionTest < Minitest::Test
   include TestHelper
 
   def setup

@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class BankTransactionTest < Test::Unit::TestCase
+class BankTransactionTest < Minitest::Test
   include Xeroizer::Record
 
   def setup

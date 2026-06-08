@@ -3,7 +3,8 @@ require 'unit_test_helper'
 class ConnectionTest < UnitTestCase
   include TestHelper
 
-  setup do
+  def setup
+    super
     @client = Xeroizer::OAuth2Application.new("client id", "client secret", access_token: "access token")
   end
 

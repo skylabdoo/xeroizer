@@ -1,7 +1,7 @@
 require "test_helper"
 require "acceptance_test"
 
-class AboutCreatingPrepayment < Test::Unit::TestCase
+class AboutCreatingPrepayment < Minitest::Test
   include AcceptanceTest
 
   def any_line_items(account)
@@ -15,12 +15,12 @@ class AboutCreatingPrepayment < Test::Unit::TestCase
   end
 
   def assert_exists(prepayment, client)
-    assert_not_nil prepayment.id,
+    refute_nil prepayment.id,
                    "Cannot check for exitence unless the prepayment (bank transaction) has non-null identifier"
-    assert_not_nil client.BankTransaction.find prepayment.id
+    refute_nil client.BankTransaction.find prepayment.id
   end
 
-  setup do
+  def setup
     @client = AcceptanceTestHelpers.oauth2_client
     all_accounts = @client.Account.all
     @account = all_accounts.select{|acct| acct.status == "ACTIVE" && acct.type == "REVENUE"}.first

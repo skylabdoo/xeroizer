@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class ContactTest < Test::Unit::TestCase
+class ContactTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -13,7 +13,7 @@ class ContactTest < Test::Unit::TestCase
 
       assert_equal(false, contact.valid?)
       blank_error = contact.errors_for(:name).first
-      assert_not_nil(blank_error)
+      refute_nil(blank_error)
       assert_equal("can't be blank", blank_error)
 
       contact.name = "SOMETHING"
@@ -45,7 +45,7 @@ class ContactTest < Test::Unit::TestCase
 
       assert_equal(false, contact.valid?)
       invalid_error = contact.errors_for(:addresses).first
-      assert_not_nil(invalid_error)
+      refute_nil(invalid_error)
       assert_equal("must all be valid", invalid_error)
 
       address.type = "DEFAULT"

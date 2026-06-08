@@ -23,7 +23,7 @@ module Xeroizer
   end
 end
 
-class ParseParamsTest < Test::Unit::TestCase
+class ParseParamsTest < Minitest::Test
   include TestHelper
 
   def setup

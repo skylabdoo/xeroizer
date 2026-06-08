@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class AddressTest < Test::Unit::TestCase
+class AddressTest < Minitest::Test
   include TestHelper
 
   def setup

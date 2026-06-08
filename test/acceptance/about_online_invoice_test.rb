@@ -1,10 +1,10 @@
 require "test_helper"
 require "acceptance_test"
 
-class AboutGetOnlineInvoiceUrl < Test::Unit::TestCase
+class AboutGetOnlineInvoiceUrl < Minitest::Test
   include AcceptanceTest
 
-  setup do
+  def setup
     @client = AcceptanceTestHelpers.oauth2_client
     @invoice = @client.Invoice.all(:where => 'Type=="ACCREC"').first
     @invoice_acc_pay = @client.Invoice.all(:where => 'Type=="ACCPAY"').first
@@ -18,7 +18,7 @@ class AboutGetOnlineInvoiceUrl < Test::Unit::TestCase
   end
 
   can "Not request OnlineInvoice of an AccPay invoice" do
-    assert_raise do
+    assert_raises do
       @online_invoice_acc_pay = @invoice_acc_pay.online_invoice
     end
   end

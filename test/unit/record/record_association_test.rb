@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class RecordAssociationTest < Test::Unit::TestCase
+class RecordAssociationTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -15,7 +15,7 @@ class RecordAssociationTest < Test::Unit::TestCase
       invoice = @client.Invoice.first
       assert_nil(invoice.attributes[:contact].contact_status)
       assert_equal(false, invoice.complete_record_downloaded?)
-      assert_not_nil(invoice.contact.contact_status)
+      refute_nil(invoice.contact.contact_status)
       assert_equal(true, invoice.complete_record_downloaded?)
     end
 

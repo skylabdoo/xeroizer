@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class OrganisationTest < Test::Unit::TestCase
+class OrganisationTest < Minitest::Test
   include TestHelper
 
   def setup
