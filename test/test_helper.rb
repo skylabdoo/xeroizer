@@ -2,7 +2,7 @@ require "rubygems"
 
 require 'test/unit'
 require 'mocha'
-require 'shoulda'
+require 'shoulda-context'
 require 'pp'
 
 require File.dirname(__FILE__) + '/../lib/xeroizer.rb'
@@ -59,7 +59,7 @@ module TestHelper
   end
 end
 
-Shoulda::Context::ClassMethods.class_eval do
+Shoulda::Context::DSL::ClassMethods.class_eval do
   %w{it must can}.each do |m|
     alias_method m, :should
   end

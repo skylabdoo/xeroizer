@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
-  s.add_development_dependency "shoulda", "~> 3.6.0"
+  s.add_development_dependency "shoulda-context", "~> 2.0"
   s.add_development_dependency "test-unit"
   s.add_development_dependency "redcarpet"
   s.add_development_dependency "yard"
