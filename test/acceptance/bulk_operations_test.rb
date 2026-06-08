@@ -1,8 +1,5 @@
 require "test_helper"
 require "acceptance_test"
-require "shoulda/matchers"
-
-include Shoulda::Matchers
 
 class BulkOperationsTest < Test::Unit::TestCase
   include AcceptanceTest
