@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class CreditNoteTest < Test::Unit::TestCase
+class CreditNoteTest < Minitest::Test
   include TestHelper
 
   def setup

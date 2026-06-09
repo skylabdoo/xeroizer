@@ -1,13 +1,13 @@
 require "test_helper"
 require "acceptance_test"
 
-class AboutCreatingBankTransactions < Test::Unit::TestCase
+class AboutCreatingBankTransactions < Minitest::Test
   include AcceptanceTest
 
   def assert_exists(bank_transaction, client)
-    assert_not_nil bank_transaction.id,
+    refute_nil bank_transaction.id,
                    "Cannot check for exitence unless the bank transaction has non-null identifier"
-    assert_not_nil client.BankTransaction.find bank_transaction.id
+    refute_nil client.BankTransaction.find bank_transaction.id
   end
 
   def any_line_items(account)
@@ -35,7 +35,7 @@ class AboutCreatingBankTransactions < Test::Unit::TestCase
     @all_tax_types.select{|tax_rate| tax_rate.tax_type == tax_type}.first
   end
 
-  setup do
+  def setup
     @client = AcceptanceTestHelpers.oauth2_client
     all_accounts = @client.Account.all
     @account = all_accounts.select{|acct| acct.status == "ACTIVE" && acct.type == "REVENUE"}.first
@@ -153,7 +153,7 @@ class AboutCreatingBankTransactions < Test::Unit::TestCase
         :code => "ACC-001"
     )
 
-    assert_raise Xeroizer::ApiException do
+    assert_raises Xeroizer::ApiException do
       new_account.save!
     end
   end

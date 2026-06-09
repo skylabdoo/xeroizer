@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class BankTransactionModelParsingTest < Test::Unit::TestCase
+class BankTransactionModelParsingTest < Minitest::Test
   def setup
     # See lib/xeroizer/record/base_model.rb
     @instance = Xeroizer::Record::BankTransactionModel.new(nil, "BankTransaction")
@@ -123,7 +123,7 @@ class BankTransactionModelParsingTest < Test::Unit::TestCase
     result = @instance.parse_response(some_xml_with_a_bank_account)
     the_bank_transaction = result.response_items.first
 
-    assert_not_nil(the_bank_transaction.bank_account,
+    refute_nil(the_bank_transaction.bank_account,
       "Missing bank_account: #{the_bank_transaction.inspect}"
     )
 

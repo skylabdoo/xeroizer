@@ -3,7 +3,8 @@ require 'unit_test_helper'
 class HttpTest < UnitTestCase
   include TestHelper
 
-  setup do
+  def setup
+    super
     @uri = "https://api.xero.com/path"
   end
 

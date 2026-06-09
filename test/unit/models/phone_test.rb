@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class PhoneTest < Test::Unit::TestCase
+class PhoneTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -15,7 +15,7 @@ class PhoneTest < Test::Unit::TestCase
       @phone = @contact.add_phone(phone_number: "1234567890123456789012345678901234567890123456789012345678901234567890")
       assert_equal(false, @phone.valid?)
       blank_error = @phone.errors_for(:phone_number).first
-      assert_not_nil(blank_error)
+      refute_nil(blank_error)
       assert_equal("must be shorter than 50 characters", blank_error)
 
     end

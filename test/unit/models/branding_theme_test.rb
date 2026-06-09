@@ -7,7 +7,8 @@ class BrandingThemeTest < UnitTestCase
   OK_RESPONSE = "<Response><Status>OK</Status></Response>".freeze
   PS_URL = "https://api.xero.com/api.xro/2.0/BrandingThemes/BT-1/PaymentServices".freeze
 
-  setup do
+  def setup
+    super
     @application = Xeroizer::OAuth2Application.new(
       CLIENT_ID, CLIENT_SECRET, tenant_id: TENANT_ID, access_token: ACCESS_TOKEN
     )

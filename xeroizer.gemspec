@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
   s.add_development_dependency "shoulda-context", "~> 2.0"
-  s.add_development_dependency "test-unit"
+  s.add_development_dependency "minitest"
   s.add_development_dependency "redcarpet"
   s.add_development_dependency "yard"
   s.add_development_dependency "webmock"

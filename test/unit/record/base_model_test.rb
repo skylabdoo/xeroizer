@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class RecordBaseModelTest < Test::Unit::TestCase
+class RecordBaseModelTest < Minitest::Test
   include TestHelper
 
   class AppleModel < Xeroizer::Record::BaseModel
@@ -49,7 +49,7 @@ class RecordBaseModelTest < Test::Unit::TestCase
 
   context "InvalidPermissionError" do
     should "also be catchable by the name 'InvaidPermissionError' for historical reasons" do
-      assert_raise(Xeroizer::Record::BaseModel::InvaidPermissionError) do
+      assert_raises(Xeroizer::Record::BaseModel::InvaidPermissionError) do
         raise Xeroizer::Record::BaseModel::InvalidPermissionError
       end
     end

@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class RecordBaseTest < Test::Unit::TestCase
+class RecordBaseTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -136,7 +136,7 @@ class RecordBaseTest < Test::Unit::TestCase
       end
 
       must 'raise an exception saving with #save!' do
-        assert_raise(Xeroizer::RecordInvalid) do
+        assert_raises(Xeroizer::RecordInvalid) do
           @contact.save!
         end
       end
@@ -165,14 +165,14 @@ class RecordBaseTest < Test::Unit::TestCase
 
       must 'raise an exception creating records with #save!' do
         @contact.stubs(:new_record?).returns(true)
-        assert_raise(Xeroizer::ApiException) do
+        assert_raises(Xeroizer::ApiException) do
           @contact.save!
         end
       end
 
       must 'raise an exception updating records with #save!' do
         @contact.stubs(:new_record?).returns(false)
-        assert_raise(Xeroizer::ApiException) do
+        assert_raises(Xeroizer::ApiException) do
           @contact.save!
         end
       end

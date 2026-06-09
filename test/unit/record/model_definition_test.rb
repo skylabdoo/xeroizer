@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class ModelDefinitionsTest < Test::Unit::TestCase
+class ModelDefinitionsTest < Minitest::Test
   include TestHelper
 
   class FirstRecord < Xeroizer::Record::Base

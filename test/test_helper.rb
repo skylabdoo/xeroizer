@@ -1,7 +1,7 @@
 require "rubygems"
 
-require 'test/unit'
-require 'mocha'
+require 'minitest/autorun'
+require 'mocha/minitest'
 require 'shoulda-context'
 require 'pp'
 

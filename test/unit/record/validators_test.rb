@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class ValidatorsTest < Test::Unit::TestCase
+class ValidatorsTest < Minitest::Test
   include TestHelper
 
   class Xeroizer::Record::TestModel < Xeroizer::Record::BaseModel
@@ -50,7 +50,7 @@ class ValidatorsTest < Test::Unit::TestCase
       # Nil contact
       assert_equal(false, @record.valid?)
       error = @record.errors_for(:contact).first
-      assert_not_nil(error)
+      refute_nil(error)
       assert_equal('association_invalid', error)
 
       # Valid contact
@@ -94,14 +94,14 @@ class ValidatorsTest < Test::Unit::TestCase
       # Nil type
       assert_equal(false, @record.valid?)
       error = @record.errors_for(:type).first
-      assert_not_nil(error)
+      refute_nil(error)
       assert_equal('not_included', error)
 
       # Invalid type
       @record.type = 'phone not valid'
       @record.valid?
       error = @record.errors_for(:type).first
-      assert_not_nil(error)
+      refute_nil(error)
       assert_equal('not_included', error)
 
       # Valid type
@@ -123,7 +123,7 @@ class ValidatorsTest < Test::Unit::TestCase
       @record.type_blank = 'phone not valid'
       @record.valid?
       error = @record.errors_for(:type_blank).first
-      assert_not_nil(error)
+      refute_nil(error)
       assert_equal('not_included_blank', error)
 
       # Valid type_blank
@@ -142,7 +142,7 @@ class ValidatorsTest < Test::Unit::TestCase
     should "have name" do
       assert_equal(false, @record.valid?)
       error = @record.errors_for(:name).first
-      assert_not_nil(error)
+      refute_nil(error)
       assert_equal('blank', error)
 
       @record.name = "NOT BLANK"

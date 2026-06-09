@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class JournalLineTest < Test::Unit::TestCase
+class JournalLineTest < Minitest::Test
   include TestHelper
   include Xeroizer::Record
 

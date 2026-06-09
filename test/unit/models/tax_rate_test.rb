@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class TaxRateTest < Test::Unit::TestCase
+class TaxRateTest < Minitest::Test
   include TestHelper
 
   def setup

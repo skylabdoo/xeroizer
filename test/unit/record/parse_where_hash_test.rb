@@ -23,7 +23,7 @@ module Xeroizer
   end
 end
 
-class ParseWhereHashTest < Test::Unit::TestCase
+class ParseWhereHashTest < Minitest::Test
   include TestHelper
 
   def setup

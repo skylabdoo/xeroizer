@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class PrepaymentTest < Test::Unit::TestCase
+class PrepaymentTest < Minitest::Test
   include TestHelper
 
   def setup

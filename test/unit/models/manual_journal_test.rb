@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class ManualJournalTest < Test::Unit::TestCase
+class ManualJournalTest < Minitest::Test
   include TestHelper
 
   def setup

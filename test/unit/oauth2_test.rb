@@ -3,7 +3,8 @@ require 'unit_test_helper'
 class OAuth2Test < UnitTestCase
   include TestHelper
 
-  setup do
+  def setup
+    super
     @client_id = 'client_id'
     @client_secret = 'client_secret'
     @access_token = 'access_token'

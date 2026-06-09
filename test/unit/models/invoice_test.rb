@@ -1,6 +1,6 @@
 require 'unit_test_helper'
 
-class InvoiceTest < Test::Unit::TestCase
+class InvoiceTest < Minitest::Test
   include TestHelper
 
   def setup
@@ -109,8 +109,8 @@ class InvoiceTest < Test::Unit::TestCase
     should "have valid #contact_name and #contact_id without downloading full invoice" do
       invoices = @client.Invoice.all
       invoices.each do |invoice|
-        assert_not_equal("", invoice.contact_name)
-        assert_not_equal("", invoice.contact_id)
+        refute_equal("", invoice.contact_name)
+        refute_equal("", invoice.contact_id)
         assert_equal(false, invoice.complete_record_downloaded?)
       end
     end

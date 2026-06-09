@@ -2,10 +2,10 @@ require "test_helper"
 require "acceptance_test"
 require "bank_transaction_reference_data"
 
-class AboutFetchingBankTransactions < Test::Unit::TestCase
+class AboutFetchingBankTransactions < Minitest::Test
   include AcceptanceTest
 
-  setup do
+  def setup
     @client = AcceptanceTestHelpers.oauth2_client
   end
 
@@ -24,7 +24,7 @@ class AboutFetchingBankTransactions < Test::Unit::TestCase
     it "returns full line item details" do
       single_bank_transaction = @client.BankTransaction.find @a_new_bank_transaction.id
 
-      assert_not_empty single_bank_transaction.line_items,
+      refute_empty single_bank_transaction.line_items,
                        "expected the bank transaction's line items to have been included"
     end
   end
@@ -42,11 +42,11 @@ class AboutFetchingBankTransactions < Test::Unit::TestCase
     end
 
     it "returns contact" do
-      assert_not_nil @the_first_bank_transaction.contact
+      refute_nil @the_first_bank_transaction.contact
     end
 
     it "returns the bank account" do
-      assert_not_nil @the_first_bank_transaction.bank_account
+      refute_nil @the_first_bank_transaction.bank_account
     end
   end
 

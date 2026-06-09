@@ -1,7 +1,7 @@
 require "test_helper"
 require "acceptance_test"
 
-class BankTransfer < Test::Unit::TestCase
+class BankTransfer < Minitest::Test
   include AcceptanceTest
 
   it_works_using_oauth2 do |client, client_type|
