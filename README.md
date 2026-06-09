@@ -1,6 +1,9 @@
 Xeroizer API Library
 ====================
 
+[![CI](https://github.com/waynerobinson/xeroizer/actions/workflows/ci.yml/badge.svg)](https://github.com/waynerobinson/xeroizer/actions/workflows/ci.yml)
+[![Gem Version](https://img.shields.io/gem/v/xeroizer)](https://rubygems.org/gems/xeroizer)
+
 **Homepage**: 		[http://waynerobinson.github.com/xeroizer](http://waynerobinson.github.com/xeroizer)
 
 **Git**: 					[git://github.com/waynerobinson/xeroizer.git](git://github.com/waynerobinson/xeroizer.git)

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Cancel superseded PR runs, but always let master runs finish (keeps the badge accurate).
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} / AS ${{ matrix.activesupport }}
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: gemfiles/activesupport_${{ matrix.activesupport }}.gemfile
+    strategy:
+      fail-fast: false
+      # Minimal covering set: every supported Ruby once, every supported
+      # ActiveSupport once (AS 8.x requires Ruby >= 3.2).
+      matrix:
+        include:
+          - { ruby: '3.1', activesupport: '7.0' }
+          - { ruby: '3.2', activesupport: '7.1' }
+          - { ruby: '3.3', activesupport: '7.2' }
+          - { ruby: '3.4', activesupport: '8.0' }
+          - { ruby: '4.0', activesupport: '8.1' }
+          # Bleeding edge (next Ruby + Rails main); allowed to fail so it never reds the build.
+          - { ruby: 'ruby-head', activesupport: 'head', experimental: true }
+    continue-on-error: ${{ matrix.experimental == true }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rake test

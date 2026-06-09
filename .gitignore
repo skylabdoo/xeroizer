@@ -12,6 +12,7 @@ pkg/
 .DS_Store
 .idea/
 Gemfile.lock
+gemfiles/*.lock
 tmp/
 *~
 TAGS

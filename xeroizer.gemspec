@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -- test/*`.split("\n")
   s.require_paths = ["lib"]
 
+  s.required_ruby_version = ">= 3.1"
+
   s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
   s.add_development_dependency "mocha"
@@ -35,7 +37,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rdoc"
   s.add_dependency "builder", ">= 2.1.2"
   s.add_dependency "oauth2", ">= 2.0", "< 3.0"
-  s.add_dependency "activesupport", ">= 5.2"
+  s.add_dependency "activesupport", ">= 7.0"
   s.add_dependency "nokogiri"
   s.add_dependency "tzinfo"
   s.add_dependency "i18n"
