@@ -453,11 +453,11 @@ xero.Contact.batch_save do
 end
 ```
 
-`batch_save` will issue one PUT request for every 2,000 unsaved records built within its block, and one
-POST request for every 2,000 existing records that have been altered within its block. If any of the
+`batch_save` will issue one PUT request for every 50 unsaved records built within its block, and one
+POST request for every 50 existing records that have been altered within its block. If any of the
 unsaved records aren't valid, it'll return `false` before sending anything across the wire;
 otherwise, it returns `true`. `batch_save` takes one optional argument: the number of records to
-create/update per request. (Defaults to 2,000.)
+create/update per request. (Defaults to 50.)
 
 If you'd rather build and send the records manually, there's a `save_records` method:
 ```ruby
@@ -467,6 +467,110 @@ contact3 = xero.Contact.build(some_more_attributes)
 xero.Contact.save_records([contact1, contact2, contact3])
 ```
 It has the same return values as `batch_save`.
+
+### Idempotent Requests
+
+Pass `:idempotency_key` to a mutating call and it will be sent to Xero as the
+[`Idempotency-Key` header](https://developer.xero.com/documentation/guides/idempotent-requests/idempotency/),
+so a retry after a transient failure won't create a duplicate. It works on
+`save`/`save!`/`create` and the discrete write helpers (`Attachment#attach_data`/
+`attach_file`, `Invoice#email`, `Invoice#void!`/`approve!`/`delete!`,
+`CreditNote#allocate`, `HistoryRecord#add_note`, `BrandingTheme#add_payment_service`).
+The key is applied before Xeroizer's own internal retries, so those reuse it
+automatically.
+
+```ruby
+# Use a key you can reproduce on retry, not a fresh random value each call.
+invoice.save(idempotency_key: "create-invoice-#{order.id}")
+```
+
+Whether `idempotency_key:` is a real keyword argument (on `save_records`,
+`batch_save`, and `BrandingTheme#add_payment_service`) or just a member of a
+trailing `options` hash (everywhere else), you pass it the same way at the call
+site: `record.save(idempotency_key: "…")`. The one method that needs extra care
+is `create`, whose attributes and request options are *separate* hashes. Keep the
+attributes in braces so the key isn't absorbed as an attribute:
+`xero.Contact.create({ name: "Acme" }, idempotency_key: "…")`.
+
+Each key covers a **single** HTTP request. `save_records` and `batch_save` can
+make several requests (one per chunk, plus a separate request for creates
+vs. updates), so they take `idempotency_key:` as either a String (only when
+the whole batch is one request) or a callable that returns a unique key per
+request.
+
+For single request batch operations, use a string:
+
+```ruby
+xero.Contact.save_records(records, idempotency_key: key)
+```
+
+For multiple requests pass a generator:
+
+```ruby
+key_for = ->(records, http_method) {
+  "#{key}-#{http_method}-#{records.map { |r| r.attributes[:name] }.join('-')}"
+}
+xero.Contact.save_records(records, 50, idempotency_key: key_for)
+xero.Contact.batch_save(50, idempotency_key: key_for) do
+  # ...build/modify records...
+end
+```
+
+Generator is called once for each request with `(records, http_method)` and must
+return a key that is unique across the batch and the same on every retry. Derive
+the key from the records' own stable identity, NOT from call order or an external
+counter. On a retry the requests are re-derived — a record saved on the first try
+becomes an update, and the remaining creates re-chunk — so the Nth request may
+carry a different set of records than it did before. A key tied to position
+rather than content then lands on the wrong records. For example, this is unsafe:
+
+```ruby
+seq = 0
+xero.Contact.save_records(records, idempotency_key: ->(_records, _method) { seq += 1; "batch-#{seq}" })
+```
+
+because `seq` follows invocation order, not the records, so a re-chunked retry
+reuses `batch-1` for a different request. Keying off the records (as in the
+example above) keeps each key bound to its content. Don't use
+`-> { SecureRandom.uuid }` either, as fresh keys on each retry defeat the
+purpose entirely.
+
+Compound operations (`CreditNote#save`, `ContactGroup#save`) issue a second
+request (allocations / contact membership). The key you pass to `save` covers the
+whole operation: the secondary request automatically gets a distinct derived key
+(`"#{key}-allocate"` / `"#{key}-contacts"`), since a distinct request needs a
+distinct key.
+
+#### Caveats
+
+- **Retry the *same* request.** Idempotency only protects you when the retry
+  sends the same key for the same request. For `save`/`create` and
+  single-request batches that is automatic. For **multi-request**
+  `save_records`/`batch_save`, retry-safety holds only when the retry
+  reconstructs identical requests — i.e. when failures fall on chunk boundaries.
+  If a multi-record request comes back with *mixed* per-record outcomes (Xero
+  accepts some records and rejects others by its own validation), the accepted
+  records shift the chunking of the records behind them on retry, changing their
+  keys. So if Xero had already created one of those records but the response was
+  lost (e.g. a network error), the retry sends that record under a different key,
+  Xero treats it as new, and a duplicate is created. Robustly avoiding this is
+  not possible at the moment, so prefer a `chunk_size` large enough to keep the
+  batch in one request when you can.
+- **128-character limit.** Xero caps the key at 128 characters. Mind this for
+  derived keys, as a long base key plus a `"-allocate"`/`"-contacts"` suffix,
+  or a long generated batch key, must still fit.
+- **One key = one request body.** A key is locked to the body of its first use:
+  reusing it with a *different* body returns `400` (whether the first attempt
+  succeeded or failed). So if a write fails Xero's validation and you fix the
+  data, retry with a **new** key; reusing the old one would be rejected. Keep
+  the same key only for *transient* failures (network/5xx/429) where the body
+  is unchanged.
+- **Keys are short-lived — don't rely on replay for long-running jobs.** Xero's
+  official guide documents a **6-minute** lifetime from the first call, after
+  which the same key is processed as a NEW request (creating a duplicate). A
+  2026-06 live measurement saw the window last ~20 minutes, but that figure is
+  unofficial and could change, so treat the documented 6 minutes as the contract
+  and keep retries well inside it.
 
 ### Errors
 

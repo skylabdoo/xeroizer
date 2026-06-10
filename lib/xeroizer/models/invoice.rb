@@ -200,33 +200,49 @@ module Xeroizer
       end
 
       # Delete an approved invoice with no payments.
-      def delete!
-        change_status!('DELETED')
+      #
+      # @param [Hash] options request options forwarded to the underlying save.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+      def delete!(options = {})
+        change_status!('DELETED', options)
       end
 
       # Void an approved invoice with no payments.
-      def void!
-        change_status!('VOIDED')
+      #
+      # @param [Hash] options request options forwarded to the underlying save.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+      def void!(options = {})
+        change_status!('VOIDED', options)
       end
 
       # Approve a draft invoice
-      def approve!
-        change_status!('AUTHORISED')
+      #
+      # @param [Hash] options request options forwarded to the underlying save.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+      def approve!(options = {})
+        change_status!('AUTHORISED', options)
       end
 
       # Send an email containing the invoice.
-      def email
+      #
+      # @param [Hash] options request options; only :idempotency_key is used.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+      def email(options = {})
         email_url = "#{parent.url}/#{CGI.escape(id)}/Email"
-        parent.application.http_post(parent.application.client, email_url, '')
+        extra_params = Http.with_idempotency_key({}, options[:idempotency_key])
+        parent.application.http_post(parent.application.client, email_url, '', extra_params)
       end
 
-      protected
+    protected
 
-      def change_status!(new_status)
+      # Deliberately calls the non-bang #save (not #save!) so the boolean return
+      # contract of void!/approve!/delete! is preserved; the bang in the name
+      # reflects the CannotChangeInvoiceStatus guard below, not a raise on save
+      # failure. +options+ is forwarded to #save.
+      def change_status!(new_status, options = {})
         raise CannotChangeInvoiceStatus.new(self, new_status) unless payments.size == 0
-
         self.status = new_status
-        save
+        save(options)
       end
     end
   end

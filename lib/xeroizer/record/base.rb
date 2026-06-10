@@ -10,11 +10,14 @@ module Xeroizer
   module Record
     class Base
       include ClassLevelInheritableAttributes
-
       class_inheritable_attributes :fields, :possible_primary_keys, :primary_key_name, :summary_only, :validators
 
-      attr_reader :attributes, :parent, :model
-      attr_accessor :errors, :complete_record_downloaded, :paged_record_downloaded
+      attr_reader :attributes
+      attr_reader :parent
+      attr_reader :model
+      attr_accessor :errors
+      attr_accessor :complete_record_downloaded
+      attr_accessor :paged_record_downloaded
 
       include ModelDefinitionHelper
       include RecordAssociationHelper
@@ -32,6 +35,8 @@ module Xeroizer
         end
       end
 
+      public
+
       def initialize(parent)
         @parent = parent
         @model = new_model_class(self.class.name.demodulize)
@@ -39,7 +44,7 @@ module Xeroizer
       end
 
       def new_model_class(model_name)
-        Xeroizer::Record.const_get(:"#{model_name}Model").new(parent.try(:application), model_name.to_s)
+        Xeroizer::Record.const_get("#{model_name}Model".to_sym).new(parent.try(:application), model_name.to_s)
       end
 
       def [](attribute)
@@ -48,11 +53,17 @@ module Xeroizer
 
       def []=(attribute, value)
         parent.mark_dirty(self) if parent
-        send(:"#{attribute}=", value)
+        send("#{attribute}=".to_sym, value)
       end
 
       def non_calculated_attributes
-        attributes.reject { |name| self.class.fields[name][:calculated] }
+        attributes.except(:parent).map do |k, v|
+          [k, if v.is_a?(Array)
+                v.map(&:to_h)
+              else
+                (v.respond_to?(:to_h) ? v.to_h : v)
+              end]
+        end.to_h
       end
 
       def attributes=(new_attributes)
@@ -100,21 +111,25 @@ module Xeroizer
         self
       end
 
-      def save
-        save!
+      # @param [Hash] options request options forwarded to the HTTP layer.
+      # @option options [String] :idempotency_key (nil) sets the +Idempotency-Key+ header.
+      # @return [Boolean] true on success, false on a save failure (XeroizerError).
+      # @raise [ArgumentError] if :idempotency_key is invalid (callable/non-String/blank).
+      def save(options = {})
+        save!(options)
         true
       rescue XeroizerError => e
         log "[ERROR SAVING] (#{__FILE__}:#{__LINE__}) - #{e.message}"
         false
       end
 
-      def save!
+      def save!(options = {})
         raise RecordInvalid unless valid?
 
         if new_record?
-          create
+          create(options)
         else
-          update
+          update(options)
         end
 
         saved!
@@ -153,14 +168,14 @@ module Xeroizer
         "#<#{self.class} #{attribute_string}>"
       end
 
-      protected
+    protected
 
       # Attempt to create a new record.
-      def create
+      def create(options = {})
         request = to_xml
         log "[CREATE SENT] (#{__FILE__}:#{__LINE__}) #{request}"
 
-        response = parent.send(parent.create_method, request)
+        response = parent.send(parent.create_method, request, options)
 
         log "[CREATE RECEIVED] (#{__FILE__}:#{__LINE__}) #{response}"
 
@@ -168,34 +183,56 @@ module Xeroizer
       end
 
       # Attempt to update an existing record.
-      def update
-        if self.class.possible_primary_keys && self.class.possible_primary_keys.all? do |possible_key|
-          self[possible_key].nil?
-        end
-          raise RecordKeyMustBeDefined.new(self.class.possible_primary_keys)
+      def update(options = {})
+        if self.class.possible_primary_keys && self.class.possible_primary_keys.all? { |possible_key| self[possible_key].nil? }
+          raise RecordKeyMustBeDefined, self.class.possible_primary_keys
         end
 
         request = to_xml
 
         log "[UPDATE SENT] (#{__FILE__}:#{__LINE__}) \r\n#{request}"
 
-        response = parent.http_post(request)
+        response = parent.http_post(request, options)
 
         log "[UPDATE RECEIVED] (#{__FILE__}:#{__LINE__}) \r\n#{response}"
 
         parse_save_response(response)
       end
 
+      # Derives a distinct key for a compound save's secondary request (e.g. a
+      # credit-note allocation or contact-group membership PUT) by suffixing the
+      # caller's key. Reusing the same, caller-supplied, key for the secondary
+      # request would be rejected by Xero.
+      # Validated before the primary request, so an invalid key fails the whole
+      # save up front.
+      def derived_idempotency_key(options, suffix)
+        key = Http.normalize_idempotency_key(options[:idempotency_key])
+        return nil if key.nil?
+
+        derived = "#{key}-#{suffix}"
+        if derived.length > Http::MAX_IDEMPOTENCY_KEY_LENGTH
+          max_base = Http::MAX_IDEMPOTENCY_KEY_LENGTH - suffix.length - 1
+          raise ArgumentError,
+                "idempotency_key is too long for this compound save: appending " \
+                "\"-#{suffix}\" makes the secondary request's key #{derived.length} characters, " \
+                "over Xero's #{Http::MAX_IDEMPOTENCY_KEY_LENGTH}-character limit. " \
+                "Use a base key of at most #{max_base} characters."
+        end
+        derived
+      end
+
       # Parse the response from a create/update request.
       def parse_save_response(response_xml)
         response = parent.parse_response(response_xml)
         record = response.response_items.first if response.response_items.is_a?(Array)
-        @attributes = record.attributes if record && record.is_a?(self.class)
+        if record && record.is_a?(self.class)
+          @attributes = record.attributes
+        end
         self
       end
 
       def log(what)
-        Xeroizer::Logging::Log.info what
+        Xeroizer::Logging::Log.info(what)
       end
     end
   end

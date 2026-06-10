@@ -24,6 +24,49 @@ module Xeroizer
       json: 'application/json'
     }.freeze
 
+    # Raised when a callable idempotency_key generator is handed to a single
+    # request path. Generators are only meaningful for the batch helpers
+    # (save_records/batch_save), which fan out into one request per chunk.
+    CALLABLE_NOT_ALLOWED =
+      "idempotency_key must be a string for a single request; a callable key " \
+      "generator is only supported by save_records/batch_save.".freeze
+
+    # Xero rejects an Idempotency-Key longer than 128 characters.
+    MAX_IDEMPOTENCY_KEY_LENGTH = 128
+
+    # Returns +key+ as a String, or nil if none given. A blank key raises rather
+    # than being dropped: a dropped key would send the write unkeyed, silently
+    # defeating retry safety.
+    # +allow_nil+: a single request may omit the key (returns nil); a batch key
+    # generator must return one for every request, so it passes allow_nil: false
+    # to reject a nil/missing return instead of silently sending the write unkeyed.
+    def self.normalize_idempotency_key(key, allow_nil: true)
+      return nil if key.nil? && allow_nil
+      raise ArgumentError, CALLABLE_NOT_ALLOWED if key.respond_to?(:call)
+      
+      unless key.is_a?(String)
+        raise ArgumentError,
+          "idempotency_key must be a String (got #{key.class}); pass a non-empty string or omit it."
+      end
+      
+      if key.blank?
+        raise ArgumentError,
+          "idempotency_key must not be blank; pass a non-empty key or omit it."
+      end
+
+      if key.length > MAX_IDEMPOTENCY_KEY_LENGTH
+        raise ArgumentError,
+          "idempotency_key must be at most #{MAX_IDEMPOTENCY_KEY_LENGTH} characters " \
+          "(Xero's limit); got #{key.length}."
+      end
+
+      key
+    end
+
+    def self.with_idempotency_key(extra_params, key)
+      key.nil? ? extra_params : extra_params.merge(idempotency_key: key)
+    end
+
     # Shortcut method for #http_request with `method` = :get.
     #
     # @param [OAuth2] client OAuth2 client
@@ -60,13 +103,24 @@ module Xeroizer
 
       headers = default_headers.merge({ 'charset' => 'utf-8' })
 
-      # include the unitdp query string parameter
-      params.merge!(unitdp_param(url))
+      # Copy, don't mutate: the code below deletes keys (:idempotency_key,
+      # :content_type), and the caller may reuse one options hash across requests.
+      params = params.merge(unitdp_param(url))
 
       headers['Content-Type'] ||= 'application/x-www-form-urlencoded' if method != :get
 
       content_type = params.delete(:content_type)
       headers['Content-Type'] = content_type if content_type
+
+      # Honoured on mutating verbs only, so a GET drops the key unvalidated.
+      # Applied before the retry loop so internal retries reuse it; plucked from
+      # params so it never leaks into the query string.
+      # https://developer.xero.com/documentation/guides/idempotent-requests/idempotency/
+      idempotency_key = params.delete(:idempotency_key)
+      unless method == :get
+        validated_key = Http.normalize_idempotency_key(idempotency_key)
+        headers['Idempotency-Key'] = validated_key if validated_key
+      end
 
       # HAX.  Xero completely misuse the If-Modified-Since HTTP header.
       if params[:ModifiedAfter]

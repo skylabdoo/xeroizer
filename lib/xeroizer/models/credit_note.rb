@@ -141,18 +141,17 @@ module Xeroizer
         parent.pdf(id, filename)
       end
 
-      def save!
-        # Calling parse_save_response() on the credit note will wipe out
-        # the allocations, so we have to manually preserve them.
+      def save!(options = {})
         allocations_backup = allocations
-        return unless super
+        allocation_key = allocations_backup.empty? ? nil : derived_idempotency_key(options, "allocate")
+        return unless super(options)
 
         self.allocations = allocations_backup
-        allocate unless allocations.empty?
+        allocate(idempotency_key: allocation_key) unless allocations.empty?
         true
       end
 
-      def allocate
+      def allocate(options = {})
         if self.class.possible_primary_keys && self.class.possible_primary_keys.all? do |possible_key|
           self[possible_key].nil?
         end
@@ -162,8 +161,10 @@ module Xeroizer
         request = association_to_xml(:allocations)
         allocations_url = "#{parent.url}/#{CGI.escape(id)}/Allocations"
 
+        extra_params = Http.with_idempotency_key({}, options[:idempotency_key])
+
         log "[ALLOCATION SENT] (#{__FILE__}:#{__LINE__}) \r\n#{request}"
-        response = parent.application.http_put(parent.application.client, allocations_url, request)
+        response = parent.application.http_put(parent.application.client, allocations_url, request, extra_params)
         log "[ALLOCATION RECEIVED] (#{__FILE__}:#{__LINE__}) \r\n#{response}"
         parse_save_response(response)
       end
