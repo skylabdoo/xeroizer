@@ -233,7 +233,7 @@ module Xeroizer
         parent.application.http_post(parent.application.client, email_url, '', extra_params)
       end
 
-    protected
+      protected
 
       # Deliberately calls the non-bang #save (not #save!) so the boolean return
       # contract of void!/approve!/delete! is preserved; the bang in the name
@@ -241,6 +241,7 @@ module Xeroizer
       # failure. +options+ is forwarded to #save.
       def change_status!(new_status, options = {})
         raise CannotChangeInvoiceStatus.new(self, new_status) unless payments.size == 0
+
         self.status = new_status
         save(options)
       end

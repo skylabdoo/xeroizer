@@ -35,21 +35,23 @@ module Xeroizer
         # omitting it makes a trailing options hash (or a collapsed idempotency_key:)
         # bind to this slot. All four such helpers funnel through this worker, so the
         # arg is normalized once here at the chokepoint rather than in each helper.
-        content_type, options = "application/octet-stream", content_type if content_type.is_a?(Hash)
+        if content_type.is_a?(Hash)
+          options = content_type
+          content_type = 'application/octet-stream'
+        end
         options = { include_online: false }.merge(options)
 
         extra_params = {
           :raw_body => true,
           :content_type => content_type,
-          "IncludeOnline" => options[:include_online]
+          'IncludeOnline' => options[:include_online]
         }
         extra_params = Http.with_idempotency_key(extra_params, options[:idempotency_key])
 
         response_xml = @application.http_put(@application.client,
                                              "#{url}/#{CGI.escape(id)}/Attachments/#{CGI.escape(filename)}",
                                              data,
-                                             extra_params
-                                            )
+                                             extra_params)
         response = parse_response(response_xml)
         if (response_items = response.response_items) && response_items.size > 0
           response_items.size == 1 ? response_items.first : response_items

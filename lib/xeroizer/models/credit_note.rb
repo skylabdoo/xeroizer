@@ -143,8 +143,8 @@ module Xeroizer
 
       def save!(options = {})
         allocations_backup = allocations
-        allocation_key = allocations_backup.empty? ? nil : derived_idempotency_key(options, "allocate")
-        return unless super(options)
+        allocation_key = allocations_backup.empty? ? nil : derived_idempotency_key(options, 'allocate')
+        return unless super
 
         self.allocations = allocations_backup
         allocate(idempotency_key: allocation_key) unless allocations.empty?

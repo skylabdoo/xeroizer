@@ -28,8 +28,8 @@ module Xeroizer
     # request path. Generators are only meaningful for the batch helpers
     # (save_records/batch_save), which fan out into one request per chunk.
     CALLABLE_NOT_ALLOWED =
-      "idempotency_key must be a string for a single request; a callable key " \
-      "generator is only supported by save_records/batch_save.".freeze
+      'idempotency_key must be a string for a single request; a callable key ' \
+      'generator is only supported by save_records/batch_save.'
 
     # Xero rejects an Idempotency-Key longer than 128 characters.
     MAX_IDEMPOTENCY_KEY_LENGTH = 128
@@ -43,21 +43,21 @@ module Xeroizer
     def self.normalize_idempotency_key(key, allow_nil: true)
       return nil if key.nil? && allow_nil
       raise ArgumentError, CALLABLE_NOT_ALLOWED if key.respond_to?(:call)
-      
+
       unless key.is_a?(String)
         raise ArgumentError,
-          "idempotency_key must be a String (got #{key.class}); pass a non-empty string or omit it."
+              "idempotency_key must be a String (got #{key.class}); pass a non-empty string or omit it."
       end
-      
+
       if key.blank?
         raise ArgumentError,
-          "idempotency_key must not be blank; pass a non-empty key or omit it."
+              'idempotency_key must not be blank; pass a non-empty key or omit it.'
       end
 
       if key.length > MAX_IDEMPOTENCY_KEY_LENGTH
         raise ArgumentError,
-          "idempotency_key must be at most #{MAX_IDEMPOTENCY_KEY_LENGTH} characters " \
-          "(Xero's limit); got #{key.length}."
+              "idempotency_key must be at most #{MAX_IDEMPOTENCY_KEY_LENGTH} characters " \
+              "(Xero's limit); got #{key.length}."
       end
 
       key

@@ -43,8 +43,8 @@ module Xeroizer
       #   under one caller key.
       def save!(options = {})
         # Derive the membership key before the primary save, so a bad key fails up front.
-        membership_key = @contacts ? derived_idempotency_key(options, "contacts") : nil
-        super(options) if new_record? or @modified
+        membership_key = @contacts ? derived_idempotency_key(options, 'contacts') : nil
+        super if new_record? or @modified
         @modified = false
         return unless @contacts
 

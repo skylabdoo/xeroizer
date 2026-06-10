@@ -115,7 +115,7 @@ module Xeroizer
         @objects[model_class].delete(resource.object_id)
       end
 
-# Create (build and save) a record.
+      # Create (build and save) a record.
       #
       # Pass request options in a *separate* second hash so attributes given as
       # bare keywords still land in +attributes+:
@@ -132,9 +132,9 @@ module Xeroizer
       def create(attributes = {}, options = {})
         if attributes.is_a?(Hash) && (attributes.key?(:idempotency_key) || attributes.key?('idempotency_key'))
           raise ArgumentError,
-                "to pass :idempotency_key to create, wrap the attributes in braces so it " \
-                "is not absorbed as a record attribute: " \
-                "create({ ... }, idempotency_key: \"...\")"
+                'to pass :idempotency_key to create, wrap the attributes in braces so it ' \
+                'is not absorbed as a record attribute: ' \
+                'create({ ... }, idempotency_key: "...")'
         end
         build(attributes).tap { |resource| resource.save(options) }
       end
@@ -191,7 +191,7 @@ module Xeroizer
       #     the requests re-chunk (saved records become updates), so a position-based
       #     key would move onto the wrong records while a content-derived key stays
       #     bound.
-      #     
+      #
       #   RETRY-SAFETY CAVEAT: this holds only when a retry reconstructs IDENTICAL
       #   requests. It does NOT when a responded chunk had mixed per-record outcomes
       #   (Xero saved some records, rejected others): a rejected record stays a create
@@ -200,13 +200,13 @@ module Xeroizer
       def save_records(records, chunk_size = DEFAULT_RECORDS_PER_BATCH_SAVE, idempotency_key: nil)
         no_errors = true
         return false unless records.all?(&:valid?)
-        raise ArgumentError, "chunk_size must be a positive integer" unless chunk_size.is_a?(Integer) && chunk_size > 0
+        raise ArgumentError, 'chunk_size must be a positive integer' unless chunk_size.is_a?(Integer) && chunk_size > 0
 
-# One [records, http_method] pair per HTTP request: creates (PUT) and
+        # One [records, http_method] pair per HTTP request: creates (PUT) and
         # updates (POST) split by verb, then each chunk is its own request.
         request_units = records
-          .group_by { |o| o.new_record? ? create_method : :http_post }
-          .flat_map { |http_method, recs| recs.each_slice(chunk_size).map { |slice| [slice, http_method] } }
+                        .group_by { |o| o.new_record? ? create_method : :http_post }
+                        .flat_map { |http_method, recs| recs.each_slice(chunk_size).map { |slice| [slice, http_method] } }
 
         # Resolve all keys up front so an unsatisfiable key set rejects the whole
         # batch before anything is sent, rather than failing mid-batch.
@@ -305,10 +305,10 @@ module Xeroizer
       def static_batch_idempotency_key(idempotency_key, request_count)
         if request_count > 1
           raise ArgumentError,
-            "save_records will send #{request_count} requests but was given a single " \
-            "idempotency_key; Xero rejects a reused key on a different request. Pass a " \
-            "callable (e.g. ->(records, http_method) { ... }) to generate a unique key " \
-            "per request, or increase chunk_size so the batch fits in one request."
+                "save_records will send #{request_count} requests but was given a single " \
+                'idempotency_key; Xero rejects a reused key on a different request. Pass a ' \
+                'callable (e.g. ->(records, http_method) { ... }) to generate a unique key ' \
+                'per request, or increase chunk_size so the batch fits in one request.'
         end
 
         [Http.normalize_idempotency_key(idempotency_key)]
@@ -327,8 +327,8 @@ module Xeroizer
 
         if keys.uniq.size != keys.size
           raise ArgumentError,
-            "idempotency_key generator returned duplicate keys; Xero rejects a reused " \
-            "key on a different request. Return a unique key per request."
+                'idempotency_key generator returned duplicate keys; Xero rejects a reused ' \
+                'key on a different request. Return a unique key per request.'
         end
 
         keys
@@ -347,11 +347,11 @@ module Xeroizer
         # A declared keyword param can't receive a positional value, so it would
         # silently drop http_method — reject it. A bare **rest receives nothing
         # and is fine.
-        if parameters.any? { |type, _name| type == :keyreq || type == :key }
+        if parameters.any? { |type, _name| %i[keyreq key].include?(type) }
           raise ArgumentError,
-            "idempotency_key generator must accept (records, http_method) positionally; " \
-            "keyword parameters are not supported. Define it as " \
-            "->(records, http_method) { ... } (fewer positionals are fine)."
+                'idempotency_key generator must accept (records, http_method) positionally; ' \
+                'keyword parameters are not supported. Define it as ' \
+                '->(records, http_method) { ... } (fewer positionals are fine).'
         end
 
         # A splat accepts everything we have — pass both.
@@ -360,12 +360,12 @@ module Xeroizer
         required_positional = parameters.count { |type, _name| type == :req }
         if required_positional > 2
           raise ArgumentError,
-            "idempotency_key generator requires #{required_positional} positional arguments " \
-            "but the batch helper supplies at most two (records, http_method). Define it " \
-            "with at most two positional parameters."
+                "idempotency_key generator requires #{required_positional} positional arguments " \
+                'but the batch helper supplies at most two (records, http_method). Define it ' \
+                'with at most two positional parameters.'
         end
 
-        arg_count = [parameters.count { |type, _name| type == :req || type == :opt }, 2].min
+        arg_count = [parameters.count { |type, _name| %i[req opt].include?(type) }, 2].min
         ->(records, http_method) { callable.call(*[records, http_method].first(arg_count)) }
       end
 

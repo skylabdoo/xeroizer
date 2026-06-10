@@ -1,5 +1,7 @@
-require "test_helper"
-require "securerandom"
+# frozen_string_literal: true
+
+require 'test_helper'
+require 'securerandom'
 
 # =============================================================================
 # MANUAL, OPT-IN live exploration of Xero's real Idempotency-Key behaviour.
@@ -64,14 +66,14 @@ require "securerandom"
 # probe stops cleanly when the token expires (reported, not failed).
 # =============================================================================
 class IdempotencyExplorationTest < Minitest::Test
-  RUN_FLAG = "XERO_LIVE_IDEMPOTENCY".freeze
+  RUN_FLAG = 'XERO_LIVE_IDEMPOTENCY'
   # Scenario 6 (the TTL probe) runs ~30 minutes (one same-key retry per minute
   # from t=6m to t=30m), so it is behind its own opt-in flag and does not slow
   # the fast scenarios 1-5.
-  TTL_FLAG = "XERO_LIVE_IDEMPOTENCY_TTL".freeze
+  TTL_FLAG = 'XERO_LIVE_IDEMPOTENCY_TTL'
 
   def setup
-    skip "Set #{RUN_FLAG}=1 (and XERO_* creds) to run the live idempotency probe" unless ENV[RUN_FLAG] == "1"
+    skip "Set #{RUN_FLAG}=1 (and XERO_* creds) to run the live idempotency probe" unless ENV[RUN_FLAG] == '1'
 
     # Capture the raw HTTP status/headers/body of each request so we can observe
     # replay status codes and any replay-indicator header. #after_request is
@@ -79,26 +81,26 @@ class IdempotencyExplorationTest < Minitest::Test
     @responses = []
     capture = lambda do |request_info, response|
       @responses << {
-        method:  request_info.method,
-        url:     request_info.url,
-        code:    (response.respond_to?(:code) ? response.code : nil),
+        method: request_info.method,
+        url: request_info.url,
+        code: (response.respond_to?(:code) ? response.code : nil),
         headers: extract_headers(response),
-        body:    (response.respond_to?(:plain_body) ? response.plain_body.to_s[0, 600] : nil)
+        body: (response.respond_to?(:plain_body) ? response.plain_body.to_s[0, 600] : nil)
       }
     end
 
-    missing = %w[XERO_CLIENT_ID XERO_CLIENT_SECRET XERO_ACCESS_TOKEN XERO_TENANT_ID].reject { |v| ENV[v] }
+    missing = %w[XERO_CLIENT_ID XERO_CLIENT_SECRET XERO_ACCESS_TOKEN XERO_TENANT_ID].reject { |v| ENV.fetch(v, nil) }
     skip "Missing required env var(s): #{missing.join(', ')}" unless missing.empty?
 
     # A Xero access token lasts only ~30 min. The long TTL probe (scenario 6)
     # can run ~30 min, so it self-renews on a 401 IF a refresh token is supplied.
     # Optional for every other scenario.
-    @refresh_token = ENV["XERO_REFRESH_TOKEN"].to_s
+    @refresh_token = ENV['XERO_REFRESH_TOKEN'].to_s
     @can_refresh   = !@refresh_token.empty?
 
     client_options = {
-      access_token:  ENV["XERO_ACCESS_TOKEN"],
-      tenant_id:     ENV["XERO_TENANT_ID"],
+      access_token: ENV.fetch('XERO_ACCESS_TOKEN', nil),
+      tenant_id: ENV.fetch('XERO_TENANT_ID', nil),
       after_request: capture
     }
     # Wiring refresh_token through enables OAuth2::AccessToken#refresh! (Xero
@@ -107,7 +109,7 @@ class IdempotencyExplorationTest < Minitest::Test
     client_options[:refresh_token] = @refresh_token if @can_refresh
 
     @client = Xeroizer::OAuth2Application.new(
-      ENV["XERO_CLIENT_ID"], ENV["XERO_CLIENT_SECRET"], client_options
+      ENV.fetch('XERO_CLIENT_ID', nil), ENV.fetch('XERO_CLIENT_SECRET', nil), client_options
     )
 
     @run = "XEROIZER-IDEMP-#{Time.now.strftime('%Y%m%d-%H%M%S')}-#{SecureRandom.hex(3)}"
@@ -119,27 +121,25 @@ class IdempotencyExplorationTest < Minitest::Test
     # dead token reads as "skipped — refresh your token", not a real failure.
     begin
       @client.Organisation.first
-    rescue => e
-      if e.class.name =~ /TokenExpired|Unauthor/ || e.message.to_s =~ /token.?expired|unauthor|\b401\b/i
-        skip "Live probe skipped: Xero auth failed (#{e.class}: #{e.message}). Refresh XERO_ACCESS_TOKEN and re-run."
-      else
-        raise
-      end
+    rescue StandardError => e
+      raise unless e.class.name =~ /TokenExpired|Unauthor/ || e.message.to_s =~ /token.?expired|unauthor|\b401\b/i
+
+      skip "Live probe skipped: Xero auth failed (#{e.class}: #{e.message}). Refresh XERO_ACCESS_TOKEN and re-run."
     end
   end
 
   def teardown
     # Best-effort cleanup: archive every contact we created so reruns stay clean.
     return if @client.nil?
+
     @created_contact_ids.uniq.each do |id|
-      begin
-        c = @client.Contact.find(id)
-        next unless c
-        c.contact_status = "ARCHIVED" # the attribute is contact_status, not status
-        c.save
-      rescue => e
-        puts "  [teardown] could not archive #{id}: #{e.class}: #{e.message}"
-      end
+      c = @client.Contact.find(id)
+      next unless c
+
+      c.contact_status = 'ARCHIVED' # the attribute is contact_status, not status
+      c.save
+    rescue StandardError => e
+      puts "  [teardown] could not archive #{id}: #{e.class}: #{e.message}"
     end
   end
 
@@ -152,25 +152,25 @@ class IdempotencyExplorationTest < Minitest::Test
     name = "#{@run}-S1"
     key  = "#{@run}-s1"
 
-    banner "1. Same key + identical request (expect replay, exactly one record)"
+    banner '1. Same key + identical request (expect replay, exactly one record)'
 
     first = create_contact(name, key)
     track(first)
-    report_last("first create")
+    report_last('first create')
 
     second = create_contact(name, key) # byte-identical retry, same key
     track(second)
-    report_last("retry (same key)")
+    report_last('retry (same key)')
 
     matches = contacts_named(name)
     puts "  contacts found with name #{name.inspect}: #{matches.size}"
     puts "  first.id=#{id_of(first).inspect}  retry.id=#{id_of(second).inspect}"
 
     assert_equal 1, matches.size,
-      "INVARIANT BROKEN: a same-key identical retry created #{matches.size} contacts (expected 1). " \
-      "Xero idempotency may have changed, or the gem stopped sending the key."
+                 "INVARIANT BROKEN: a same-key identical retry created #{matches.size} contacts (expected 1). " \
+                 'Xero idempotency may have changed, or the gem stopped sending the key.'
     assert_equal id_of(first), id_of(second),
-      "Retry returned a different id than the original — replay did not return the cached resource."
+                 'Retry returned a different id than the original — replay did not return the cached resource.'
   end
 
   # ---------------------------------------------------------------------------
@@ -187,11 +187,11 @@ class IdempotencyExplorationTest < Minitest::Test
     banner "2. Same key + DIFFERENT body (probes the 'reused key rejected' assumption)"
 
     track(create_contact(name1, key)) # succeeds, key now used for body A
-    report_last("create A")
+    report_last('create A')
     a_code = last_code
 
     track(create_contact(name2, key)) # same key, different body B (gem swallows a 4xx)
-    report_last("create B (same key, different body)")
+    report_last('create B (same key, different body)')
     b_code = last_code
 
     a_count = contacts_named(name1).size
@@ -204,8 +204,8 @@ class IdempotencyExplorationTest < Minitest::Test
     # gem's multi-request design rests on. Assert the invariant so a future change
     # (Xero accepting key reuse on a new body) fails loudly here.
     assert_equal 0, b_count,
-      "Reused key on a different body created a record (B count #{b_count}). Xero previously " \
-      "rejected this (4xx); the gem's 'distinct request needs a distinct key' premise may no longer hold."
+                 "Reused key on a different body created a record (B count #{b_count}). Xero previously " \
+                 "rejected this (4xx); the gem's 'distinct request needs a distinct key' premise may no longer hold."
   end
 
   # ---------------------------------------------------------------------------
@@ -216,8 +216,8 @@ class IdempotencyExplorationTest < Minitest::Test
     contact_key = "#{@run}-s3c"
     fresh_key   = "#{@run}-s3a"
 
-    banner "3. Same key on a different endpoint (probes per-endpoint vs per-app scope)"
-    puts "  NOTE: this creates up to two Accounts that this harness does NOT clean up; archive them by hand."
+    banner '3. Same key on a different endpoint (probes per-endpoint vs per-app scope)'
+    puts '  NOTE: this creates up to two Accounts that this harness does NOT clean up; archive them by hand.'
 
     track(create_contact("#{@run}-S3", contact_key))
     contact_code = last_code
@@ -238,13 +238,13 @@ class IdempotencyExplorationTest < Minitest::Test
 
     if baseline_code.to_i != 200
       notify "INCONCLUSIVE: baseline Account create failed (HTTP #{baseline_code}) — the Account body " \
-             "is invalid in this tenant. Adjust create_account, then re-run, to test cross-endpoint scope."
+             'is invalid in this tenant. Adjust create_account, then re-run, to test cross-endpoint scope.'
     elsif reuse_code.to_i >= 400
       notify "Key scope is PER-APP (cross-endpoint): reusing a Contact's key for an Account was rejected " \
              "(HTTP #{reuse_code}) even though the Account itself is valid. Keys collide across endpoints."
     else
       notify "Cross-endpoint reuse was NOT rejected (baseline #{baseline_code}, reuse #{reuse_code}); the key " \
-             "may be scoped per-endpoint."
+             'may be scoped per-endpoint.'
     end
   end
 
@@ -259,7 +259,7 @@ class IdempotencyExplorationTest < Minitest::Test
     key = "#{@run}-s4"
     dup = "#{@run}-S4-dup"
 
-    banner "4. Reuse a key after a 4xx (duplicate-name) — does a corrected body go through?"
+    banner '4. Reuse a key after a 4xx (duplicate-name) — does a corrected body go through?'
 
     # Pre-create so a second create with the same name is a server-side dup error.
     track(create_contact(dup, "#{@run}-s4-seed"))
@@ -275,9 +275,9 @@ class IdempotencyExplorationTest < Minitest::Test
     puts "  duplicate create (key K) -> HTTP #{invalid_code}"
     puts "  corrected create (same key K) -> HTTP #{corrected_code}; '#{fixed}' count: #{fixed_count}"
     notify "Reuse-after-4xx: dup HTTP #{invalid_code}, corrected(same key) HTTP #{corrected_code}, fixed-count #{fixed_count}."
-    notify "If corrected HTTP is 2xx and fixed-count is 1, the key can be reused after a 4xx. If corrected " \
-           "is 4xx / fixed-count 0, the key is locked to the failure => rotate the key when retrying a " \
-           "corrected body (see README caveats)."
+    notify 'If corrected HTTP is 2xx and fixed-count is 1, the key can be reused after a 4xx. If corrected ' \
+           'is 4xx / fixed-count 0, the key is locked to the failure => rotate the key when retrying a ' \
+           'corrected body (see README caveats).'
   end
 
   # ---------------------------------------------------------------------------
@@ -291,7 +291,7 @@ class IdempotencyExplorationTest < Minitest::Test
     dup_name = "#{@run}-S5-dup"
     key      = "#{@run}-s5"
 
-    banner "5. Batch partial-success replay under summarizeErrors=false"
+    banner '5. Batch partial-success replay under summarizeErrors=false'
 
     # Pre-create the contact the batch will duplicate. Both batch records have a
     # name, so they pass the gem's client-side valid? and the batch IS sent;
@@ -307,7 +307,7 @@ class IdempotencyExplorationTest < Minitest::Test
       dup = @client.Contact.build(name: dup_name)
       begin
         @client.Contact.save_records([ok, dup], 50, idempotency_key: key)
-      rescue => e
+      rescue StandardError => e
         puts "  batch raised #{e.class}: #{e.message}"
       end
       [ok, dup]
@@ -325,10 +325,10 @@ class IdempotencyExplorationTest < Minitest::Test
     count = contacts_named(ok_name).size
     puts "  contacts named #{ok_name.inspect}: #{count}"
     notify "Batch partial replay: attempt1 HTTP #{code1}, attempt2(same key) HTTP #{code2}, ok-count #{count} " \
-           "(1 = replayed correctly; 2 = reprocessed => the valid record was duplicated)."
+           '(1 = replayed correctly; 2 = reprocessed => the valid record was duplicated).'
     assert_operator count, :<=, 1,
-      "INVARIANT BROKEN: the valid record in a partial-success batch was created #{count} times on a same-key " \
-      "retry — Xero did not replay the mixed response, so batch idempotency does not protect partial successes."
+                    "INVARIANT BROKEN: the valid record in a partial-success batch was created #{count} times on a same-key " \
+                    'retry — Xero did not replay the mixed response, so batch idempotency does not protect partial successes.'
   end
 
   # ---------------------------------------------------------------------------
@@ -353,27 +353,27 @@ class IdempotencyExplorationTest < Minitest::Test
   # (4xx), so no duplicate accumulates.
   # ---------------------------------------------------------------------------
   def test_6_key_ttl_expiry
-    skip "Set #{TTL_FLAG}=1 to run the ~30-minute TTL probe (in addition to #{RUN_FLAG}=1)" unless ENV[TTL_FLAG] == "1"
+    skip "Set #{TTL_FLAG}=1 to run the ~30-minute TTL probe (in addition to #{RUN_FLAG}=1)" unless ENV[TTL_FLAG] == '1'
 
     name = "#{@run}-S6-ttl"
     key  = "#{@run}-s6"
 
-    banner "6. key TTL (SLOW ~30 min): same-key create every minute, t=6m..t=30m, until it stops replaying"
+    banner '6. key TTL (SLOW ~30 min): same-key create every minute, t=6m..t=30m, until it stops replaying'
 
     track(create_contact(name, key)) # first call: creates the contact AND caches key K at t=0
     t0 = Time.now
     puts "  t=0   first create -> HTTP #{last_code} (name created; key K caches this create)"
 
-    c_immediate = ttl_probe("t=0   immediate retry", name, key)
+    c_immediate = ttl_probe('t=0   immediate retry', name, key)
     assert_equal 200, c_immediate,
-      "Immediate same-key retry should replay the cached 200 — the TTL probe is meaningless otherwise."
+                 'Immediate same-key retry should replay the cached 200 — the TTL probe is meaningless otherwise.'
 
     timeline    = {} # minute => HTTP code
     expired_at  = nil
     auth_died   = nil
 
     (6..30).each do |minute|
-      sleep_until(t0 + minute * 60)
+      sleep_until(t0 + (minute * 60))
       code = ttl_probe("t=#{minute}m  retry", name, key)
       timeline[minute] = code
 
@@ -386,7 +386,7 @@ class IdempotencyExplorationTest < Minitest::Test
       expired_at ||= minute if code != 200
     end
 
-    curve = timeline.map { |m, c| "t#{m}=#{c}" }.join(" ")
+    curve = timeline.map { |m, c| "t#{m}=#{c}" }.join(' ')
     if auth_died
       notify "TTL probe ENDED EARLY at t=#{auth_died}m on an auth failure (access token expired and no usable " \
              "XERO_REFRESH_TOKEN). Partial curve: #{curve}. Set XERO_REFRESH_TOKEN and re-run for the full range."
@@ -408,7 +408,7 @@ class IdempotencyExplorationTest < Minitest::Test
 
   def create_contact(name, key)
     @client.Contact.create({ name: name }, idempotency_key: key)
-  rescue => e
+  rescue StandardError => e
     # A Xero 4xx is usually swallowed (create returns a nil-id record); guard
     # against anything that does raise so a scenario can still report.
     puts "  [create_contact #{name.inspect}] #{e.class}: #{e.message}"
@@ -417,10 +417,10 @@ class IdempotencyExplorationTest < Minitest::Test
 
   def create_account(name, key)
     @client.Account.create(
-      { code: "Z#{rand(100_000)}", name: name, type: "EXPENSE" },
+      { code: "Z#{rand(100_000)}", name: name, type: 'EXPENSE' },
       idempotency_key: key
     )
-  rescue => e
+  rescue StandardError => e
     puts "  [create_account #{name.inspect}] #{e.class}: #{e.message}"
     nil
   end
@@ -437,6 +437,7 @@ class IdempotencyExplorationTest < Minitest::Test
   # per-request latency accumulates. No-op if the target has already passed.
   def sleep_until(target)
     return if Time.now >= target
+
     puts "  …sleeping until #{target.strftime('%H:%M:%S')} (#{(target - Time.now).ceil}s)"
     while (remaining = target - Time.now) > 0
       sleep [30, remaining].min
@@ -462,15 +463,16 @@ class IdempotencyExplorationTest < Minitest::Test
     end
 
     state = if auth_failure?(code) then "AUTH FAIL #{code} (token expired; set XERO_REFRESH_TOKEN to self-renew)"
-            elsif code == 200       then "replayed (key ALIVE)"
-            else                         "reprocessed -> #{code} (key EXPIRED)"
+            elsif code == 200 then 'replayed (key ALIVE)'
+            else
+              "reprocessed -> #{code} (key EXPIRED)"
             end
     puts "  #{label} -> HTTP #{code} (#{state})"
     code
   end
 
   def auth_failure?(code)
-    code == 401 || code == 403
+    [401, 403].include?(code)
   end
 
   # Renew the access token mid-run via the configured refresh token. Xero rotates
@@ -479,17 +481,18 @@ class IdempotencyExplorationTest < Minitest::Test
   # refresh token or if renewal fails.
   def refresh_auth!
     return false unless @can_refresh
+
     @client.renew_access_token
-    puts "  …access token renewed via XERO_REFRESH_TOKEN"
+    puts '  …access token renewed via XERO_REFRESH_TOKEN'
     true
-  rescue => e
+  rescue StandardError => e
     puts "  …token refresh failed: #{e.class}: #{e.message}"
     false
   end
 
   def contacts_named(name)
-    @client.Contact.all(where: %{Name=="#{name}"}) || []
-  rescue => e
+    @client.Contact.all(where: %(Name=="#{name}")) || []
+  rescue StandardError => e
     puts "  [query] contacts_named(#{name.inspect}) failed: #{e.class}: #{e.message}"
     []
   end
@@ -510,8 +513,9 @@ class IdempotencyExplorationTest < Minitest::Test
   def report_last(label)
     r = @responses.last
     return puts("  [#{label}] no response captured") unless r
+
     puts "  [#{label}] #{r[:method].to_s.upcase} -> HTTP #{r[:code]}"
-    replay = r[:headers] && r[:headers].find { |k, _| k.to_s.downcase.include?("idempot") }
+    replay = r[:headers] && r[:headers].find { |k, _| k.to_s.downcase.include?('idempot') }
     puts "    replay header: #{replay.inspect}" if replay
   end
 
@@ -521,7 +525,7 @@ class IdempotencyExplorationTest < Minitest::Test
     elsif response.respond_to?(:response) && response.response.respond_to?(:headers)
       response.response.headers
     end
-  rescue
+  rescue StandardError
     nil
   end
 end

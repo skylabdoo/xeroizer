@@ -35,8 +35,7 @@ module Xeroizer
         response_xml = @application.http_put(@application.client,
                                              "#{url}/#{CGI.escape(id)}/history",
                                              xml,
-                                             extra_params
-                                            )
+                                             extra_params)
         response = parse_response(response_xml)
         if (response_items = response.response_items) && response_items.size > 0
           response_items.size == 1 ? response_items.first : response_items

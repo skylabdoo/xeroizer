@@ -10,14 +10,11 @@ module Xeroizer
   module Record
     class Base
       include ClassLevelInheritableAttributes
+
       class_inheritable_attributes :fields, :possible_primary_keys, :primary_key_name, :summary_only, :validators
 
-      attr_reader :attributes
-      attr_reader :parent
-      attr_reader :model
-      attr_accessor :errors
-      attr_accessor :complete_record_downloaded
-      attr_accessor :paged_record_downloaded
+      attr_reader :attributes, :parent, :model
+      attr_accessor :errors, :complete_record_downloaded, :paged_record_downloaded
 
       include ModelDefinitionHelper
       include RecordAssociationHelper
@@ -35,8 +32,6 @@ module Xeroizer
         end
       end
 
-      public
-
       def initialize(parent)
         @parent = parent
         @model = new_model_class(self.class.name.demodulize)
@@ -44,7 +39,7 @@ module Xeroizer
       end
 
       def new_model_class(model_name)
-        Xeroizer::Record.const_get("#{model_name}Model".to_sym).new(parent.try(:application), model_name.to_s)
+        Xeroizer::Record.const_get(:"#{model_name}Model").new(parent.try(:application), model_name.to_s)
       end
 
       def [](attribute)
@@ -53,17 +48,17 @@ module Xeroizer
 
       def []=(attribute, value)
         parent.mark_dirty(self) if parent
-        send("#{attribute}=".to_sym, value)
+        send(:"#{attribute}=", value)
       end
 
       def non_calculated_attributes
-        attributes.except(:parent).map do |k, v|
-          [k, if v.is_a?(Array)
-                v.map(&:to_h)
-              else
-                (v.respond_to?(:to_h) ? v.to_h : v)
-              end]
-        end.to_h
+        attributes.except(:parent).transform_values do |v|
+          if v.is_a?(Array)
+            v.map(&:to_h)
+          else
+            (v.respond_to?(:to_h) ? v.to_h : v)
+          end
+        end
       end
 
       def attributes=(new_attributes)
@@ -168,7 +163,7 @@ module Xeroizer
         "#<#{self.class} #{attribute_string}>"
       end
 
-    protected
+      protected
 
       # Attempt to create a new record.
       def create(options = {})
@@ -184,9 +179,7 @@ module Xeroizer
 
       # Attempt to update an existing record.
       def update(options = {})
-        if self.class.possible_primary_keys && self.class.possible_primary_keys.all? { |possible_key| self[possible_key].nil? }
-          raise RecordKeyMustBeDefined, self.class.possible_primary_keys
-        end
+        raise RecordKeyMustBeDefined, self.class.possible_primary_keys if self.class.possible_primary_keys && self.class.possible_primary_keys.all? { |possible_key| self[possible_key].nil? }
 
         request = to_xml
 
@@ -213,7 +206,7 @@ module Xeroizer
         if derived.length > Http::MAX_IDEMPOTENCY_KEY_LENGTH
           max_base = Http::MAX_IDEMPOTENCY_KEY_LENGTH - suffix.length - 1
           raise ArgumentError,
-                "idempotency_key is too long for this compound save: appending " \
+                'idempotency_key is too long for this compound save: appending ' \
                 "\"-#{suffix}\" makes the secondary request's key #{derived.length} characters, " \
                 "over Xero's #{Http::MAX_IDEMPOTENCY_KEY_LENGTH}-character limit. " \
                 "Use a base key of at most #{max_base} characters."
@@ -225,9 +218,7 @@ module Xeroizer
       def parse_save_response(response_xml)
         response = parent.parse_response(response_xml)
         record = response.response_items.first if response.response_items.is_a?(Array)
-        if record && record.is_a?(self.class)
-          @attributes = record.attributes
-        end
+        @attributes = record.attributes if record && record.is_a?(self.class)
         self
       end
 
