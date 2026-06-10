@@ -14,9 +14,7 @@ module Xeroizer
             end
 
           when :has_many
-            if options[:allow_blanks] && (record[attribute].nil? || (record[attribute].is_a?(Array) && record[attribute].size == 0))
-              return true
-            end
+            return true if options[:allow_blanks] && record[attribute].blank?
 
             if record[attribute].is_a?(Array) && record[attribute].size > 0
               unless record[attribute].all? { |r| r.is_a?(Xeroizer::Record::Base) && r.valid? }

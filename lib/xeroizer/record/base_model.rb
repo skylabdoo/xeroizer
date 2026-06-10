@@ -172,11 +172,11 @@ module Xeroizer
             request = to_bulk_xml(some_records)
             response = parse_response(send(http_method, request, { summarizeErrors: false }))
             response.response_items.each_with_index do |record, i|
-              next unless record and record.is_a?(model_class)
+next unless record.is_a?(model_class)
 
               some_records[i].attributes = record.non_calculated_attributes
               some_records[i].errors = record.errors
-              no_errors = record.errors.nil? || record.errors.empty? if no_errors
+              no_errors = record.errors.blank? if no_errors
               some_records[i].saved!
             end
           end
