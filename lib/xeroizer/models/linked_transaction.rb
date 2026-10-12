@@ -31,8 +31,6 @@ module Xeroizer
       protected
 
       def update(options = {})
-        raise RecordKeyMustBeDefined, self.class.possible_primary_keys if id.nil?
-
         request = to_xml
         log "[UPDATE SENT] (#{__FILE__}:#{__LINE__}) \r\n#{request}"
 
