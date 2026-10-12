@@ -41,6 +41,9 @@ The org you record against must already contain the data each test reads:
   between `.first` and `.last`).
 - `about_creating_*` / `about_fetching_*` — at least one `ACTIVE` `REVENUE` and one
   `ACTIVE` `BANK` account; the fetching test seeds its own bank transaction.
+- `linked_transaction` — at least one `ACTIVE` `EXPENSE` and one `ACTIVE` `REVENUE`
+  account; it creates its own bills, sales invoices and a contact named
+  "Billable Expense Test Customer".
 - `about_fetching_bank_transactions` asserts the **exact** attribute-key set Xero
   returns. If a first recording fails there, Xero's shape has drifted since the
   test was written — update the expected keys to match (that drift is the point).
