@@ -28,6 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `batch_payment_id` attribute on Payment. (#568)
 - `idempotency_key:` on mutating requests, sent as `Idempotency-Key` header
   so a retried write is not processed twice.
+- `LinkedTransaction` model for Xero's billable expenses (`/LinkedTransactions`):
+  create, update and read, with the `SourceTransactionID`, `ContactID`, `status`
+  and `TargetTransactionID` GET filters. Delete is not implemented.
+- `read_only: true` field option: the field is parsed from responses but never
+  sent in request XML.
 
 ### Changed
 

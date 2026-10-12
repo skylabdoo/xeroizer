@@ -58,6 +58,7 @@ module Xeroizer
         #   :model_name => allows class used for children to be different from it's ndoe name in the XML.
         #   :type => type of field
         #   :skip_writer => skip the writer method
+        #   :read_only => parsed from responses but never written to request XML (server-derived fields)
         def define_simple_attribute(field_name, field_type, options, value_if_nil = nil)
           self.fields ||= {}
 

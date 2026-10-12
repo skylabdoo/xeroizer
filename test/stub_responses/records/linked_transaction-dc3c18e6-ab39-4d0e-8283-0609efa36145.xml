@@ -1,0 +1,17 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>9e8d7c6b-5a4f-4e3d-8c2b-1a0f9e8d7c6b</Id>
+  <Status>OK</Status>
+  <ProviderName>Xero API Previewer</ProviderName>
+  <DateTimeUTC>2015-09-10T01:13:09.6301188Z</DateTimeUTC>
+  <LinkedTransactions>
+    <LinkedTransaction>
+      <LinkedTransactionID>dc3c18e6-ab39-4d0e-8283-0609efa36145</LinkedTransactionID>
+      <SourceTransactionID>0465c7b5-69b8-4e55-8c32-af73eab9afba</SourceTransactionID>
+      <SourceLineItemID>c92bf129-5da1-401c-8cf5-1508e92ee829</SourceLineItemID>
+      <Status>DRAFT</Status>
+      <Type>BILLABLEEXPENSE</Type>
+      <UpdatedDateUTC>2015-09-09T23:43:54</UpdatedDateUTC>
+      <SourceTransactionTypeCode>ACCPAY</SourceTransactionTypeCode>
+    </LinkedTransaction>
+  </LinkedTransactions>
+</Response>

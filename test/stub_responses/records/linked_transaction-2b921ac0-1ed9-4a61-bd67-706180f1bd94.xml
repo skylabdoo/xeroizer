@@ -1,0 +1,20 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>0b7c2d1e-5f3a-4e8b-9c6d-7a1f2e3d4c5b</Id>
+  <Status>OK</Status>
+  <ProviderName>Xero API Previewer</ProviderName>
+  <DateTimeUTC>2015-09-10T01:13:02.1174421Z</DateTimeUTC>
+  <LinkedTransactions>
+    <LinkedTransaction>
+      <LinkedTransactionID>2b921ac0-1ed9-4a61-bd67-706180f1bd94</LinkedTransactionID>
+      <SourceTransactionID>057df639-6632-4995-b0ac-00152e1c5092</SourceTransactionID>
+      <SourceLineItemID>aa605236-49cc-4cf7-8c43-161def9bbf68</SourceLineItemID>
+      <ContactID>a94c0f29-8924-4b05-b0e6-585ea1982faa</ContactID>
+      <TargetTransactionID>147f3680-1b41-48ee-8c7f-61a656bbf49a</TargetTransactionID>
+      <TargetLineItemID>14f06cf1-e2af-4825-8476-bb79f5ba503e</TargetLineItemID>
+      <Status>BILLED</Status>
+      <Type>BILLABLEEXPENSE</Type>
+      <UpdatedDateUTC>2015-09-09T22:13:28</UpdatedDateUTC>
+      <SourceTransactionTypeCode>SPEND</SourceTransactionTypeCode>
+    </LinkedTransaction>
+  </LinkedTransactions>
+</Response>
