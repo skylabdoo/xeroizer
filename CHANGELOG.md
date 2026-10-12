@@ -26,6 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `company_number` attribute on Contact. (#559)
 - `edition` attribute on Organisation. (#564)
 - `batch_payment_id` attribute on Payment. (#568)
+- `LinkedTransaction` model for Xero's billable expenses (`/LinkedTransactions`):
+  create, update and read, with the `SourceTransactionID`, `ContactID`, `status`
+  and `TargetTransactionID` GET filters. Delete is not implemented.
+- `read_only: true` field option: the field is parsed from responses but never
+  sent in request XML.
 
 ### Changed
 

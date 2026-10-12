@@ -33,6 +33,7 @@ module Xeroizer
     record :Item
     record :Journal
     record :LineItem
+    record :LinkedTransaction
     record :ManualJournal
     record :Organisation
     record :Payment
