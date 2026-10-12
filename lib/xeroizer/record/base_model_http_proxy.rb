@@ -26,6 +26,11 @@ module Xeroizer
             params[:ContactIDs]     = filterize(options[:ContactIDs]) if options[:ContactIDs]
             params[:Statuses]       = filterize(options[:Statuses]) if options[:Statuses]
 
+            # Single-value filters (LinkedTransactions)
+            params[:SourceTransactionID] = options[:SourceTransactionID] if options[:SourceTransactionID]
+            params[:ContactID]           = options[:ContactID] if options[:ContactID]
+            params[:TargetTransactionID] = options[:TargetTransactionID] if options[:TargetTransactionID]
+
             if options[:where]
               params[:where] =  case options[:where]
                                   when String   then options[:where]

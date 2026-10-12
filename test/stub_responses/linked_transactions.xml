@@ -1,0 +1,29 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>f1d0e0a2-7c3b-4b7e-9a8d-2c1e5b6a9f10</Id>
+  <Status>OK</Status>
+  <ProviderName>Xero API Previewer</ProviderName>
+  <DateTimeUTC>2015-09-10T01:12:44.3815747Z</DateTimeUTC>
+  <LinkedTransactions>
+    <LinkedTransaction>
+      <LinkedTransactionID>2b921ac0-1ed9-4a61-bd67-706180f1bd94</LinkedTransactionID>
+      <SourceTransactionID>057df639-6632-4995-b0ac-00152e1c5092</SourceTransactionID>
+      <SourceLineItemID>aa605236-49cc-4cf7-8c43-161def9bbf68</SourceLineItemID>
+      <ContactID>a94c0f29-8924-4b05-b0e6-585ea1982faa</ContactID>
+      <TargetTransactionID>147f3680-1b41-48ee-8c7f-61a656bbf49a</TargetTransactionID>
+      <TargetLineItemID>14f06cf1-e2af-4825-8476-bb79f5ba503e</TargetLineItemID>
+      <Status>BILLED</Status>
+      <Type>BILLABLEEXPENSE</Type>
+      <UpdatedDateUTC>2015-09-09T22:13:28</UpdatedDateUTC>
+      <SourceTransactionTypeCode>SPEND</SourceTransactionTypeCode>
+    </LinkedTransaction>
+    <LinkedTransaction>
+      <LinkedTransactionID>dc3c18e6-ab39-4d0e-8283-0609efa36145</LinkedTransactionID>
+      <SourceTransactionID>0465c7b5-69b8-4e55-8c32-af73eab9afba</SourceTransactionID>
+      <SourceLineItemID>c92bf129-5da1-401c-8cf5-1508e92ee829</SourceLineItemID>
+      <Status>DRAFT</Status>
+      <Type>BILLABLEEXPENSE</Type>
+      <UpdatedDateUTC>2015-09-09T23:43:54</UpdatedDateUTC>
+      <SourceTransactionTypeCode>ACCPAY</SourceTransactionTypeCode>
+    </LinkedTransaction>
+  </LinkedTransactions>
+</Response>

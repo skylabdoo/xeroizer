@@ -64,6 +64,8 @@ module Xeroizer
               c.tag!(model.class.xml_node_name || model.model_name) {
                 attributes.each do | key, value |
                   field = self.class.fields[key]
+                  next if field[:read_only]
+
                   value = self.send(key) if field[:calculated]
                   xml_value_from_field(b, field, value) unless value.nil?
                 end
