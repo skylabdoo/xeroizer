@@ -104,6 +104,18 @@ class InvoiceTest < Minitest::Test
     end
   end
 
+  # Invoice does not declare its GET options, so unknown keys are still dropped
+  # rather than raising; changing that would break existing callers.
+  context 'unknown GET options' do
+    should 'be dropped from the request' do
+      @client.expects(:http_get).with do |_client, url, params|
+        url =~ /Invoices$/ && params == {}
+      end.returns(get_record_xml(:invoices))
+
+      @client.Invoice.all(contact_id: '4bb34b03-3378-4bb2-a0ed-6345abf3224e')
+    end
+  end
+
   context 'updated date' do
     should 'get the updated date as utc' do
       invoices = @client.Invoice.all

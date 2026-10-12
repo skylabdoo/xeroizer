@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and `TargetTransactionID` GET filters. Delete is not implemented.
 - `read_only: true` field option: the field is parsed from responses but never
   sent in request XML.
+- `set_get_options` model option: `all` and `first` raise `ArgumentError` on any
+  option key the model does not declare, instead of dropping it and fetching
+  every record. Opt-in; `LinkedTransaction` declares its filters, other models
+  are unchanged.
 
 ### Changed
 
