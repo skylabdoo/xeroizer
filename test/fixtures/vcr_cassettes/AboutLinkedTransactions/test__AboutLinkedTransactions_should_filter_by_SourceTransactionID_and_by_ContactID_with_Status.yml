@@ -1,0 +1,910 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.xero.com/api.xro/2.0/Accounts
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Charset:
+      - utf-8
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Authorization:
+      - "<REDACTED>"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '53412'
+      Xero-Correlation-Id:
+      - 1653e153-a9d1-4ca2-9bf5-1bb526984910
+      X-Appminlimit-Remaining:
+      - '9992'
+      X-Minlimit-Remaining:
+      - '58'
+      X-Daylimit-Remaining:
+      - '991'
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Server:
+      - tpzgw-c
+      Expires:
+      - Mon, 12 Oct 2026 12:04:26 GMT
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Date:
+      - Mon, 12 Oct 2026 12:04:26 GMT
+      Connection:
+      - keep-alive
+      X-Client-Tls-Ver:
+      - tls1.3
+    body:
+      encoding: UTF-8
+      string: "<Response xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+        \ <Id>1653e153-a9d1-4ca2-9bf5-1bb526984910</Id>\r\n  <Status>OK</Status>\r\n
+        \ <ProviderName>nnc-oauth2</ProviderName>\r\n  <DateTimeUTC>2026-10-12T12:04:26.7717881Z</DateTimeUTC>\r\n
+        \ <Accounts>\r\n    <Account>\r\n      <AccountID>13918178-849a-4823-9a31-57b7eac713d7</AccountID>\r\n
+        \     <Code>090</Code>\r\n      <Name>Business Bank Account</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>BANK</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <BankAccountNumber>30623412345678</BankAccountNumber>\r\n      <BankAccountType>BANK</BankAccountType>\r\n
+        \     <CurrencyCode>AUD</CurrencyCode>\r\n      <ReportingCode>ASS</ReportingCode>\r\n
+        \     <ReportingCodeName>Asset</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>26028d3a-f981-44d6-a9ed-a522198870f8</AccountID>\r\n
+        \     <Code>091</Code>\r\n      <Name>Business Savings Account</Name>\r\n
+        \     <Status>ACTIVE</Status>\r\n      <Type>BANK</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n
+        \     <Class>ASSET</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <BankAccountNumber>30623412345679</BankAccountNumber>\r\n
+        \     <BankAccountType>BANK</BankAccountType>\r\n      <CurrencyCode>AUD</CurrencyCode>\r\n
+        \     <ReportingCode>ASS</ReportingCode>\r\n      <ReportingCodeName>Asset</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>06ec63ac-7a90-4864-a598-e373bf7deb93</AccountID>\r\n      <Code>096</Code>\r\n
+        \     <Name>NAB 996 Embedded Health Pty Ltd</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>BANK</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <BankAccountNumber>083000123456996</BankAccountNumber>\r\n      <BankAccountType>BANK</BankAccountType>\r\n
+        \     <CurrencyCode>AUD</CurrencyCode>\r\n      <ReportingCode>ASS.CUR.CAS.BAN</ReportingCode>\r\n
+        \     <ReportingCodeName>Bank accounts/(overdraft)</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:56:31.481</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>e2bacdc6-2006-43c2-a5da-3c0e5f43b452</AccountID>\r\n      <Code>200</Code>\r\n
+        \     <Name>Sales</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>REVENUE</Type>\r\n
+        \     <TaxType>OUTPUT</TaxType>\r\n      <Description>Income from any normal
+        business activity</Description>\r\n      <Class>REVENUE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>REV.TRA.GOO</ReportingCode>\r\n
+        \     <ReportingCodeName>Sale of goods</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>true</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>39987591-5a9a-4513-8072-828069a65f9c</AccountID>\r\n      <Code>260</Code>\r\n
+        \     <Name>Other Revenue</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>OTHERINCOME</Type>\r\n
+        \     <TaxType>OUTPUT</TaxType>\r\n      <Description>Any other income that
+        does not relate to normal business activities and is not recurring</Description>\r\n
+        \     <Class>REVENUE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>REV.OTH</ReportingCode>\r\n
+        \     <ReportingCodeName>Other revenue</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>1335b8b2-4d63-4af8-937f-04087ae2e36e</AccountID>\r\n
+        \     <Code>270</Code>\r\n      <Name>Interest Income</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>OTHERINCOME</Type>\r\n      <TaxType>OUTPUT</TaxType>\r\n      <Description>Interest
+        income</Description>\r\n      <Class>REVENUE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>REV.INV.INT</ReportingCode>\r\n
+        \     <ReportingCodeName>Interest</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>ee30a086-d381-4bd6-ba47-7af927d25825</AccountID>\r\n
+        \     <Code>300</Code>\r\n      <Name>Purchases</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>DIRECTCOSTS</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Goods
+        purchased with the intention of selling these to customers</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>078b095c-7e80-4887-9712-1d3721dfffcf</AccountID>\r\n
+        \     <Code>310</Code>\r\n      <Name>Cost of Goods Sold</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>DIRECTCOSTS</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Cost
+        of good sold by the business.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>d392fe47-c99d-499e-a200-46709dd6b6e7</AccountID>\r\n      <Code>400</Code>\r\n
+        \     <Name>Advertising</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Expenses incurred for
+        advertising while trying to increase sales</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>959af5f4-9925-44e8-b283-7ddf4b427238</AccountID>\r\n      <Code>404</Code>\r\n
+        \     <Name>Bank Fees</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>EXEMPTEXPENSES</TaxType>\r\n      <Description>Fees charged
+        by your bank for transactions regarding your bank account(s).</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>ff09eac3-5b17-44fb-9eea-e2e9375e91b4</AccountID>\r\n      <Code>408</Code>\r\n
+        \     <Name>Cleaning</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Expenses incurred for
+        cleaning  business property.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>6db51cfa-0326-4e63-a743-c78c4d99aba4</AccountID>\r\n      <Code>412</Code>\r\n
+        \     <Name>Consulting &amp; Accounting</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        related to paying consultants</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>7f940c53-bae5-41a8-a3a3-c841227fee01</AccountID>\r\n      <Code>416</Code>\r\n
+        \     <Name>Depreciation</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>DEPRECIATN</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The amount of the
+        asset's cost (based on the useful life) that was consumed during the period</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.DEP</ReportingCode>\r\n
+        \     <ReportingCodeName>Depreciation</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>18e27517-81e0-437c-bc21-fbba8e30d6bb</AccountID>\r\n      <Code>420</Code>\r\n
+        \     <Name>Entertainment</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>EXEMPTEXPENSES</TaxType>\r\n      <Description>Expenses paid
+        by company for the business but are not deductable for income tax purposes.</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.ENT</ReportingCode>\r\n
+        \     <ReportingCodeName>Entertainment</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>c4a9d449-ef04-43a7-9af8-49c6558b361e</AccountID>\r\n
+        \     <Code>425</Code>\r\n      <Name>Freight &amp; Courier</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred on courier &amp; freight costs</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>94882296-5acf-4350-8c5b-82bc9370ab78</AccountID>\r\n      <Code>429</Code>\r\n
+        \     <Name>General Expenses</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>General expenses related
+        to the running of the business.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>48a193e4-f1e3-49b8-8ff3-74137575f087</AccountID>\r\n      <Code>433</Code>\r\n
+        \     <Name>Insurance</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Expenses incurred for
+        insuring the business' assets</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>a29e26fb-06ec-4aad-8a6f-6cadc52291f8</AccountID>\r\n      <Code>437</Code>\r\n
+        \     <Name>Interest Expense</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>EXEMPTEXPENSES</TaxType>\r\n      <Description>Any interest
+        expenses paid to ATO, business bank accounts or credit card accounts.</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.INT</ReportingCode>\r\n
+        \     <ReportingCodeName>Interest and finance charges</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>1b83b470-95ae-4b0b-a84e-8c407d5ea2ae</AccountID>\r\n      <Code>441</Code>\r\n
+        \     <Name>Legal expenses</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Expenses incurred on
+        any legal matters</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>42a56c1a-6141-4bf2-913d-916dc1a35cfd</AccountID>\r\n      <Code>445</Code>\r\n
+        \     <Name>Light, Power, Heating</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred for lighting, powering or heating the premises</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>005f380d-4a9c-497f-b9d7-817f0f02790e</AccountID>\r\n      <Code>449</Code>\r\n
+        \     <Name>Motor Vehicle Expenses</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred on the running of company motor vehicles</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP.VEH</ReportingCode>\r\n      <ReportingCodeName>Vehicle
+        expenses</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>8ab9d684-f897-4168-b5d1-2279bf74bb82</AccountID>\r\n      <Code>453</Code>\r\n
+        \     <Name>Office Expenses</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>General expenses related
+        to the running of the business office.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>true</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>b18eaea6-4d11-462c-ac30-7975108b5859</AccountID>\r\n      <Code>461</Code>\r\n
+        \     <Name>Printing &amp; Stationery</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred by the entity as a result of printing and stationery</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>f5f05ee3-f9cd-4bf9-9423-ed81de96b537</AccountID>\r\n      <Code>469</Code>\r\n
+        \     <Name>Rent</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>The payment to lease
+        a building or area.</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.REN</ReportingCode>\r\n
+        \     <ReportingCodeName>Rental and lease payments</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>e91eee7a-340e-4203-8af8-14db5121af35</AccountID>\r\n      <Code>473</Code>\r\n
+        \     <Name>Repairs and Maintenance</Name>\r\n      <Status>ARCHIVED</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred on a damaged or run down asset that will bring the asset back to
+        its original condition.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP</ReportingCode>\r\n      <ReportingCodeName>Expense</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>c4f12f09-846e-4f6f-b39c-dff3be3e49a7</AccountID>\r\n      <Code>477</Code>\r\n
+        \     <Name>Wages and Salaries</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Payment
+        to employees in exchange for their resources</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP.EMP.WAG</ReportingCode>\r\n      <ReportingCodeName>Wages
+        and salaries</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>479252dc-1e01-4a86-a452-9552a191453f</AccountID>\r\n      <Code>478</Code>\r\n
+        \     <Name>Superannuation</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Superannuation
+        contributions</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.EMP.SUP</ReportingCode>\r\n
+        \     <ReportingCodeName>Superannuation expenses</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>98154d6b-0424-42f7-9aff-678db4ff62ba</AccountID>\r\n      <Code>479</Code>\r\n
+        \     <Name>Commission</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Commission paid to staff
+        in Payroll</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.COS</ReportingCode>\r\n
+        \     <ReportingCodeName>Cost of goods sold</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>b3742a53-0f64-4765-b5cc-3ece843b2e91</AccountID>\r\n      <Code>485</Code>\r\n
+        \     <Name>Subscriptions</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>E.g. Magazines, professional
+        bodies.</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>266f40cc-5aa1-4f6c-b078-eb615171d6de</AccountID>\r\n      <Code>489</Code>\r\n
+        \     <Name>Telephone &amp; Internet</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenditure
+        incurred from any business-related phone calls, phone lines, or internet connections</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP</ReportingCode>\r\n
+        \     <ReportingCodeName>Expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>25717024-5b50-4320-93b7-280c0614a613</AccountID>\r\n      <Code>493</Code>\r\n
+        \     <Name>Travel - National</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Expenses
+        incurred from domestic travel which has a business purpose</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.TRA.NAT</ReportingCode>\r\n
+        \     <ReportingCodeName>National travel and accommodation</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>eaa06c90-21e6-4176-9333-8ab4c23f0004</AccountID>\r\n      <Code>494</Code>\r\n
+        \     <Name>Travel - International</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>EXEMPTEXPENSES</TaxType>\r\n
+        \     <Description>Expenses incurred from international travel which has a
+        business purpose</Description>\r\n      <Class>EXPENSE</Class>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.TRA.INT</ReportingCode>\r\n
+        \     <ReportingCodeName>International travel and accomodation</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>d290c7f4-df33-46f0-917b-d188c6f517dc</AccountID>\r\n      <Code>497</Code>\r\n
+        \     <Name>Bank Revaluations</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Bank
+        account revaluations due for foreign exchange rate changes</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <SystemAccount>BANKCURRENCYGAIN</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP.FOR</ReportingCode>\r\n      <ReportingCodeName>Foreign
+        currency gains/losses</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:56:46.007</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>09ef3689-6913-4f31-aeca-81646680e623</AccountID>\r\n
+        \     <Code>498</Code>\r\n      <Name>Unrealised Currency Gains</Name>\r\n
+        \     <Status>ACTIVE</Status>\r\n      <Type>EXPENSE</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n
+        \     <Description>Unrealised currency gains on outstanding items</Description>\r\n
+        \     <Class>EXPENSE</Class>\r\n      <SystemAccount>UNREALISEDCURRENCYGAIN</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP.FOR.UGL</ReportingCode>\r\n      <ReportingCodeName>Unrealised
+        foreign currency gains and losses</ReportingCodeName>\r\n      <HasAttachments>false</HasAttachments>\r\n
+        \     <UpdatedDateUTC>2026-10-10T20:56:46.007</UpdatedDateUTC>\r\n      <AddToWatchlist>false</AddToWatchlist>\r\n
+        \   </Account>\r\n    <Account>\r\n      <AccountID>e0b4f130-7fb7-4e29-9a85-1e002ea5cc31</AccountID>\r\n
+        \     <Code>499</Code>\r\n      <Name>Realised Currency Gains</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Gains
+        or losses made due to currency exchange rate changes</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <SystemAccount>REALISEDCURRENCYGAIN</SystemAccount>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>EXP.FOR.RGL</ReportingCode>\r\n
+        \     <ReportingCodeName>Realised foreign currency gains and losses</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:56:46.007</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>53bee866-8d31-4669-bd62-69026afcc86d</AccountID>\r\n      <Code>505</Code>\r\n
+        \     <Name>Income Tax Expense</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EXPENSE</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>A
+        percentage of total earnings paid to the government.</Description>\r\n      <Class>EXPENSE</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EXP.INC</ReportingCode>\r\n      <ReportingCodeName>Income
+        tax expense</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>3dd5c80d-e109-4313-8c61-41648e33704f</AccountID>\r\n      <Code>610</Code>\r\n
+        \     <Name>Accounts Receivable</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRENT</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Outstanding
+        invoices the company has issued out to the client but has not yet received
+        in cash at balance date.</Description>\r\n      <Class>ASSET</Class>\r\n      <SystemAccount>DEBTORS</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.CUR.REC.TRA</ReportingCode>\r\n      <ReportingCodeName>Trade
+        receivables</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>26a3ec3b-0aa8-4cbe-b0b1-20c6277a55ad</AccountID>\r\n      <Code>620</Code>\r\n
+        \     <Name>Prepayments</Name>\r\n      <Status>ARCHIVED</Status>\r\n      <Type>CURRENT</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>An expenditure
+        that has been paid for in advance.</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.CUR.REC.PRE</ReportingCode>\r\n      <ReportingCodeName>Prepayments</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>2c4189ef-31d4-44ed-a295-1bf8908f97d4</AccountID>\r\n      <Code>630</Code>\r\n
+        \     <Name>Inventory</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>INVENTORY</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Value of tracked
+        inventory items for resale.</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.CUR.INY</ReportingCode>\r\n      <ReportingCodeName>Inventories</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>true</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>2d69b4ee-37d4-4f67-b950-32cbdd5765ed</AccountID>\r\n      <Code>710</Code>\r\n
+        \     <Name>Office Equipment</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>FIXED</Type>\r\n
+        \     <TaxType>INPUT</TaxType>\r\n      <Description>Office equipment that
+        is owned and controlled by the business</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.NCA.FIX.PLA</ReportingCode>\r\n      <ReportingCodeName>Plant
+        and equipment at cost</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>24d010bf-5e4b-42dd-9aa3-a5484dd0686f</AccountID>\r\n      <Code>711</Code>\r\n
+        \     <Name>Less Accumulated Depreciation on Office Equipment</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>FIXED</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The
+        total amount of office equipment cost that has been consumed by the entity
+        (based on the useful life)</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.NCA.FIX.PLA.ACC</ReportingCode>\r\n      <ReportingCodeName>Accumulated
+        depreciation of plant and equipment</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>75bbcb81-6b3d-4ca9-8522-3b582cb5c21a</AccountID>\r\n      <Code>720</Code>\r\n
+        \     <Name>Computer Equipment</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>FIXED</Type>\r\n      <TaxType>INPUT</TaxType>\r\n      <Description>Computer
+        equipment that is owned and controlled by the business</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>true</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.NCA.FIX.PLA</ReportingCode>\r\n      <ReportingCodeName>Plant
+        and equipment at cost</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>44ef13ab-a913-4688-b6f0-52877b670ad4</AccountID>\r\n      <Code>721</Code>\r\n
+        \     <Name>Less Accumulated Depreciation on Computer Equipment</Name>\r\n
+        \     <Status>ACTIVE</Status>\r\n      <Type>FIXED</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n
+        \     <Description>The total amount of computer equipment cost that has been
+        consumed by the business (based on the useful life)</Description>\r\n      <Class>ASSET</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>ASS.NCA.FIX.PLA.ACC</ReportingCode>\r\n      <ReportingCodeName>Accumulated
+        depreciation of plant and equipment</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>8e9c5166-d3fe-4e21-827a-f42753568e80</AccountID>\r\n      <Code>800</Code>\r\n
+        \     <Name>Accounts Payable</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Outstanding invoices
+        the company has received from suppliers but has not yet paid at balance date</Description>\r\n
+        \     <Class>LIABILITY</Class>\r\n      <SystemAccount>CREDITORS</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.PAY</ReportingCode>\r\n      <ReportingCodeName>Trade
+        and other payables</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>c11b84a9-e90a-4094-83d7-b8494d195ecc</AccountID>\r\n      <Code>801</Code>\r\n
+        \     <Name>Unpaid Expense Claims</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Expense
+        claims typically made by employees/shareholder employees still outstanding.</Description>\r\n
+        \     <Class>LIABILITY</Class>\r\n      <SystemAccount>UNPAIDEXPCLM</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.PAY.EMP</ReportingCode>\r\n      <ReportingCodeName>Employee
+        entitlements (wages</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>6c0a1e28-9310-453a-884a-600d59d91ecb</AccountID>\r\n      <Code>803</Code>\r\n
+        \     <Name>Wage Payables</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Xero automatically
+        updates this account for payroll entries created using Payroll and will store
+        the payroll amount to be paid to the employee for the pay run. This account
+        enables you to maintain separate accounts for employee Wages Payable amounts
+        and Accounts Payable amounts</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <SystemAccount>WAGEPAYABLES</SystemAccount>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>LIA.CUR.PAY.EMP</ReportingCode>\r\n
+        \     <ReportingCodeName>Employee entitlements (wages</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>e43f1a1b-48c5-453a-929b-5ef6f6d65e76</AccountID>\r\n      <Code>804</Code>\r\n
+        \     <Name>Wages Payable - Payroll</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA</ReportingCode>\r\n      <ReportingCodeName>Liabilities</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>38b7b812-d334-46eb-872e-67c4cfb87538</AccountID>\r\n      <Code>805</Code>\r\n
+        \     <Name>Accrued Liabilities</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR</ReportingCode>\r\n      <ReportingCodeName>Current
+        Liabilities</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>66e60a82-99d8-47d1-956b-5baea404acba</AccountID>\r\n      <Code>820</Code>\r\n
+        \     <Name>GST</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The balance in
+        this account represents GST owing to or from the ATO. At the end of the GST
+        period, it is this account that should be used to code against either the
+        'refunds from' or 'payments to' the ATO that will appear on the bank statement.
+        Xero has been designed to use only one GST account to track GST on income
+        and expenses, so there is no need to add any new GST accounts to Xero.</Description>\r\n
+        \     <Class>LIABILITY</Class>\r\n      <SystemAccount>GST</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.TAX.GST</ReportingCode>\r\n      <ReportingCodeName>Goods
+        and services tax</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>4d111d55-1c71-46b4-8cbc-d8b54d8d54c5</AccountID>\r\n      <Code>825</Code>\r\n
+        \     <Name>PAYG Withholdings Payable</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The
+        amount of PAYE tax that is due to be paid</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.PAY.PAY</ReportingCode>\r\n      <ReportingCodeName>PAYG</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>true</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>a47d1f5b-5297-484a-8a8a-64a75053e4f4</AccountID>\r\n      <Code>826</Code>\r\n
+        \     <Name>Superannuation Payable</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The
+        amount of superannuation that is due to be paid</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.PAY</ReportingCode>\r\n      <ReportingCodeName>Trade
+        and other payables</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>eba8b619-8e5d-43df-bd0a-08c328021003</AccountID>\r\n      <Code>830</Code>\r\n
+        \     <Name>Income Tax Payable</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The
+        amount of income tax that is due to be paid, also resident withholding tax
+        paid on interest received.</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.TAX.INC</ReportingCode>\r\n      <ReportingCodeName>Income
+        Tax</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>b19dcc8e-665d-4139-89ec-908f3e72d569</AccountID>\r\n      <Code>835</Code>\r\n
+        \     <Name>Revenue Received in Advance</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>When
+        a customer pays in advance of work/services.</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR.DEF</ReportingCode>\r\n      <ReportingCodeName>Deferred
+        income</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>305b05b3-01f3-4f47-a45d-edfa66ea03e7</AccountID>\r\n      <Code>840</Code>\r\n
+        \     <Name>Historical Adjustment</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>For
+        accountant adjustments</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <SystemAccount>HISTORICAL</SystemAccount>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>LIA.CUR</ReportingCode>\r\n
+        \     <ReportingCodeName>Current Liabilities</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>50031b5d-828f-4090-b1f1-d5eb591d8b18</AccountID>\r\n      <Code>850</Code>\r\n
+        \     <Name>Suspense</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>An entry that allows
+        an unknown transaction to be entered, so the accounts can still be worked
+        on in balance and the entry can be dealt with later.</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.CUR</ReportingCode>\r\n      <ReportingCodeName>Current
+        Liabilities</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>5e2674a9-f572-4c81-8c26-49522c42737e</AccountID>\r\n      <Code>855</Code>\r\n
+        \     <Name>Clearing Account</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>true</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA</ReportingCode>\r\n      <ReportingCodeName>Liabilities</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>37441137-cfe3-4c2b-a569-ef75e6b66ae4</AccountID>\r\n      <Code>860</Code>\r\n
+        \     <Name>Rounding</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>An adjustment entry
+        to allow for rounding</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <SystemAccount>ROUNDING</SystemAccount>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>LIA.CUR</ReportingCode>\r\n
+        \     <ReportingCodeName>Current Liabilities</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>a94c9633-aeb1-4b13-a96b-7998d887b770</AccountID>\r\n      <Code>877</Code>\r\n
+        \     <Name>Tracking Transfers</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Transfers
+        between tracking categories</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <SystemAccount>TRACKINGTRANSFERS</SystemAccount>\r\n      <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>LIA.CUR</ReportingCode>\r\n
+        \     <ReportingCodeName>Current Liabilities</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>64ddb541-7e5f-4ded-a072-2f59d8898a8c</AccountID>\r\n      <Code>880</Code>\r\n
+        \     <Name>Owner A Drawings</Name>\r\n      <Status>ACTIVE</Status>\r\n      <Type>CURRLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Withdrawals by
+        the owners</Description>\r\n      <Class>LIABILITY</Class>\r\n      <EnablePaymentsToAccount>true</EnablePaymentsToAccount>\r\n
+        \     <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n      <ReportingCode>LIA.NCL.DRA</ReportingCode>\r\n
+        \     <ReportingCodeName>Beneficiary/shareholder drawings</ReportingCodeName>\r\n
+        \     <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>16e01c0e-4fbd-4488-b4c3-e399903306aa</AccountID>\r\n      <Code>881</Code>\r\n
+        \     <Name>Owner A Funds Introduced</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>CURRLIAB</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Funds
+        contributed by the owner</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>true</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.NCL.ADV</ReportingCode>\r\n      <ReportingCodeName>Beneficiary/shareholder
+        advance accounts</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>c1de1295-c39c-444c-abfa-447b2263563f</AccountID>\r\n      <Code>900</Code>\r\n
+        \     <Name>Loan</Name>\r\n      <Status>ARCHIVED</Status>\r\n      <Type>TERMLIAB</Type>\r\n
+        \     <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Money that has
+        been borrowed from a creditor</Description>\r\n      <Class>LIABILITY</Class>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>LIA.NCL.LOA</ReportingCode>\r\n      <ReportingCodeName>Loans</ReportingCodeName>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>e2eda5d3-a80f-45ff-af4c-74472fd904d4</AccountID>\r\n      <Code>960</Code>\r\n
+        \     <Name>Retained Earnings</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EQUITY</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>Do
+        not Use</Description>\r\n      <Class>EQUITY</Class>\r\n      <SystemAccount>RETAINEDEARNINGS</SystemAccount>\r\n
+        \     <EnablePaymentsToAccount>false</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EQU.RET</ReportingCode>\r\n      <ReportingCodeName>Retained
+        earnings/Accumulated funds</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n    <Account>\r\n
+        \     <AccountID>dfe8ba15-3324-4d29-b4e2-2f23c05e8532</AccountID>\r\n      <Code>970</Code>\r\n
+        \     <Name>Owner A Share Capital</Name>\r\n      <Status>ACTIVE</Status>\r\n
+        \     <Type>EQUITY</Type>\r\n      <TaxType>BASEXCLUDED</TaxType>\r\n      <Description>The
+        value of shares purchased by the shareholders</Description>\r\n      <Class>EQUITY</Class>\r\n
+        \     <EnablePaymentsToAccount>true</EnablePaymentsToAccount>\r\n      <ShowInExpenseClaims>false</ShowInExpenseClaims>\r\n
+        \     <ReportingCode>EQU.SHA</ReportingCode>\r\n      <ReportingCodeName>Share
+        capital</ReportingCodeName>\r\n      <ReportingCodeUpdatedUTC>2013-01-18T12:00:00</ReportingCodeUpdatedUTC>\r\n
+        \     <HasAttachments>false</HasAttachments>\r\n      <UpdatedDateUTC>2026-10-10T20:55:45.267</UpdatedDateUTC>\r\n
+        \     <AddToWatchlist>false</AddToWatchlist>\r\n    </Account>\r\n  </Accounts>\r\n</Response>"
+  recorded_at: Mon, 12 Oct 2026 12:04:26 GMT
+- request:
+    method: put
+    uri: https://api.xero.com/api.xro/2.0/Invoices
+    body:
+      encoding: UTF-8
+      string: xml=%3CInvoice%3E%0A%20%20%3CType%3EACCPAY%3C%2FType%3E%0A%20%20%3CStatus%3EAUTHORISED%3C%2FStatus%3E%0A%20%20%3CContact%3E%0A%20%20%20%20%3CName%3EBillable%20Expense%20Test%20Customer%3C%2FName%3E%0A%20%20%3C%2FContact%3E%0A%20%20%3CDate%3E2026-10-12%3C%2FDate%3E%0A%20%20%3CDueDate%3E2026-10-26%3C%2FDueDate%3E%0A%20%20%3CLineItems%3E%0A%20%20%20%20%3CLineItem%3E%0A%20%20%20%20%20%20%3CDescription%3EBillable%20expense%20ACCPAY%20line%3C%2FDescription%3E%0A%20%20%20%20%20%20%3CQuantity%3E1%3C%2FQuantity%3E%0A%20%20%20%20%20%20%3CUnitAmount%3E50%3C%2FUnitAmount%3E%0A%20%20%20%20%20%20%3CAccountCode%3E400%3C%2FAccountCode%3E%0A%20%20%20%20%3C%2FLineItem%3E%0A%20%20%3C%2FLineItems%3E%0A%3C%2FInvoice%3E%0A
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Charset:
+      - utf-8
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Authorization:
+      - "<REDACTED>"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '2558'
+      Xero-Correlation-Id:
+      - 60ce7188-2952-4275-bf0f-c6a792d88454
+      X-Appminlimit-Remaining:
+      - '9991'
+      X-Minlimit-Remaining:
+      - '57'
+      X-Daylimit-Remaining:
+      - '990'
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Server:
+      - tpzgw-c
+      Expires:
+      - Mon, 12 Oct 2026 12:04:27 GMT
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Date:
+      - Mon, 12 Oct 2026 12:04:27 GMT
+      Connection:
+      - keep-alive
+      X-Client-Tls-Ver:
+      - tls1.3
+    body:
+      encoding: UTF-8
+      string: "<Response xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+        \ <Id>60ce7188-2952-4275-bf0f-c6a792d88454</Id>\r\n  <Status>OK</Status>\r\n
+        \ <ProviderName>nnc-oauth2</ProviderName>\r\n  <DateTimeUTC>2026-10-12T12:04:27.4974218Z</DateTimeUTC>\r\n
+        \ <Invoices>\r\n    <Invoice>\r\n      <Contact>\r\n        <ContactID>7f4477d1-8061-4be0-873d-ef38d69a4756</ContactID>\r\n
+        \       <ContactStatus>ACTIVE</ContactStatus>\r\n        <Name>Billable Expense
+        Test Customer</Name>\r\n        <Addresses>\r\n          <Address>\r\n            <AddressType>STREET</AddressType>\r\n
+        \         </Address>\r\n          <Address>\r\n            <AddressType>POBOX</AddressType>\r\n
+        \         </Address>\r\n        </Addresses>\r\n        <Phones>\r\n          <Phone>\r\n
+        \           <PhoneType>DEFAULT</PhoneType>\r\n          </Phone>\r\n          <Phone>\r\n
+        \           <PhoneType>DDI</PhoneType>\r\n          </Phone>\r\n          <Phone>\r\n
+        \           <PhoneType>FAX</PhoneType>\r\n          </Phone>\r\n          <Phone>\r\n
+        \           <PhoneType>MOBILE</PhoneType>\r\n          </Phone>\r\n        </Phones>\r\n
+        \       <UpdatedDateUTC>2026-10-12T12:04:24.403</UpdatedDateUTC>\r\n        <IsSupplier>true</IsSupplier>\r\n
+        \       <IsCustomer>true</IsCustomer>\r\n      </Contact>\r\n      <Date>2026-10-12T00:00:00</Date>\r\n
+        \     <DueDate>2026-10-26T00:00:00</DueDate>\r\n      <Status>AUTHORISED</Status>\r\n
+        \     <LineAmountTypes>Exclusive</LineAmountTypes>\r\n      <LineItems>\r\n
+        \       <LineItem>\r\n          <Description>Billable expense ACCPAY line</Description>\r\n
+        \         <UnitAmount>50.00</UnitAmount>\r\n          <TaxType>INPUT</TaxType>\r\n
+        \         <TaxAmount>5.00</TaxAmount>\r\n          <LineAmount>50.00</LineAmount>\r\n
+        \         <AccountCode>400</AccountCode>\r\n          <Quantity>1.0000</Quantity>\r\n
+        \         <LineItemID>906847c1-0d14-493d-a939-b2eb9b0c49c9</LineItemID>\r\n
+        \         <AccountID>d392fe47-c99d-499e-a200-46709dd6b6e7</AccountID>\r\n
+        \       </LineItem>\r\n      </LineItems>\r\n      <SubTotal>50.00</SubTotal>\r\n
+        \     <TotalTax>5.00</TotalTax>\r\n      <Total>55.00</Total>\r\n      <UpdatedDateUTC>2026-10-12T12:04:27.447</UpdatedDateUTC>\r\n
+        \     <CurrencyCode>AUD</CurrencyCode>\r\n      <Type>ACCPAY</Type>\r\n      <InvoiceID>1e47dc75-a80f-42fe-b86d-945ba8a1c974</InvoiceID>\r\n
+        \     <AmountDue>55.00</AmountDue>\r\n      <AmountPaid>0.00</AmountPaid>\r\n
+        \     <SentToContact>false</SentToContact>\r\n      <CurrencyRate>1.0000000000</CurrencyRate>\r\n
+        \     <HasErrors>false</HasErrors>\r\n      <UpdatedDateUTCString>2026-10-12T12:04:27Z</UpdatedDateUTCString>\r\n
+        \   </Invoice>\r\n  </Invoices>\r\n</Response>"
+  recorded_at: Mon, 12 Oct 2026 12:04:27 GMT
+- request:
+    method: put
+    uri: https://api.xero.com/api.xro/2.0/LinkedTransactions
+    body:
+      encoding: UTF-8
+      string: xml=%3CLinkedTransaction%3E%0A%20%20%3CSourceTransactionID%3E1e47dc75-a80f-42fe-b86d-945ba8a1c974%3C%2FSourceTransactionID%3E%0A%20%20%3CSourceLineItemID%3E906847c1-0d14-493d-a939-b2eb9b0c49c9%3C%2FSourceLineItemID%3E%0A%20%20%3CContactID%3E7f4477d1-8061-4be0-873d-ef38d69a4756%3C%2FContactID%3E%0A%3C%2FLinkedTransaction%3E%0A
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Charset:
+      - utf-8
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Authorization:
+      - "<REDACTED>"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '915'
+      Xero-Correlation-Id:
+      - 95440a68-ed03-40af-a7c0-87d705b8eb38
+      X-Appminlimit-Remaining:
+      - '9990'
+      X-Minlimit-Remaining:
+      - '56'
+      X-Daylimit-Remaining:
+      - '989'
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Server:
+      - tpzgw-c
+      Expires:
+      - Mon, 12 Oct 2026 12:04:27 GMT
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Date:
+      - Mon, 12 Oct 2026 12:04:27 GMT
+      Connection:
+      - keep-alive
+      X-Client-Tls-Ver:
+      - tls1.3
+    body:
+      encoding: UTF-8
+      string: "<Response xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+        \ <Id>95440a68-ed03-40af-a7c0-87d705b8eb38</Id>\r\n  <Status>OK</Status>\r\n
+        \ <ProviderName>nnc-oauth2</ProviderName>\r\n  <DateTimeUTC>2026-10-12T12:04:27.904265Z</DateTimeUTC>\r\n
+        \ <LinkedTransactions>\r\n    <LinkedTransaction>\r\n      <LinkedTransactionID>bc31f937-e083-40f9-9055-9be673678413</LinkedTransactionID>\r\n
+        \     <SourceTransactionID>1e47dc75-a80f-42fe-b86d-945ba8a1c974</SourceTransactionID>\r\n
+        \     <SourceLineItemID>906847c1-0d14-493d-a939-b2eb9b0c49c9</SourceLineItemID>\r\n
+        \     <ContactID>7f4477d1-8061-4be0-873d-ef38d69a4756</ContactID>\r\n      <Status>APPROVED</Status>\r\n
+        \     <Type>BILLABLEEXPENSE</Type>\r\n      <UpdatedDateUTC>2026-10-12T12:04:28</UpdatedDateUTC>\r\n
+        \     <SourceTransactionTypeCode>ACCPAY</SourceTransactionTypeCode>\r\n    </LinkedTransaction>\r\n
+        \ </LinkedTransactions>\r\n</Response>"
+  recorded_at: Mon, 12 Oct 2026 12:04:27 GMT
+- request:
+    method: get
+    uri: https://api.xero.com/api.xro/2.0/LinkedTransactions?SourceTransactionID=1e47dc75-a80f-42fe-b86d-945ba8a1c974
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Charset:
+      - utf-8
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Authorization:
+      - "<REDACTED>"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '916'
+      Xero-Correlation-Id:
+      - 9437ec45-5eea-4697-a402-5ffe3e26d5fc
+      X-Appminlimit-Remaining:
+      - '9989'
+      X-Minlimit-Remaining:
+      - '55'
+      X-Daylimit-Remaining:
+      - '988'
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Server:
+      - tpzgw-c
+      Expires:
+      - Mon, 12 Oct 2026 12:04:28 GMT
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Date:
+      - Mon, 12 Oct 2026 12:04:28 GMT
+      Connection:
+      - keep-alive
+      X-Client-Tls-Ver:
+      - tls1.3
+    body:
+      encoding: UTF-8
+      string: "<Response xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+        \ <Id>9437ec45-5eea-4697-a402-5ffe3e26d5fc</Id>\r\n  <Status>OK</Status>\r\n
+        \ <ProviderName>nnc-oauth2</ProviderName>\r\n  <DateTimeUTC>2026-10-12T12:04:28.2839218Z</DateTimeUTC>\r\n
+        \ <LinkedTransactions>\r\n    <LinkedTransaction>\r\n      <LinkedTransactionID>bc31f937-e083-40f9-9055-9be673678413</LinkedTransactionID>\r\n
+        \     <SourceTransactionID>1e47dc75-a80f-42fe-b86d-945ba8a1c974</SourceTransactionID>\r\n
+        \     <SourceLineItemID>906847c1-0d14-493d-a939-b2eb9b0c49c9</SourceLineItemID>\r\n
+        \     <ContactID>7f4477d1-8061-4be0-873d-ef38d69a4756</ContactID>\r\n      <Status>APPROVED</Status>\r\n
+        \     <Type>BILLABLEEXPENSE</Type>\r\n      <UpdatedDateUTC>2026-10-12T12:04:28</UpdatedDateUTC>\r\n
+        \     <SourceTransactionTypeCode>ACCPAY</SourceTransactionTypeCode>\r\n    </LinkedTransaction>\r\n
+        \ </LinkedTransactions>\r\n</Response>"
+  recorded_at: Mon, 12 Oct 2026 12:04:28 GMT
+- request:
+    method: get
+    uri: https://api.xero.com/api.xro/2.0/LinkedTransactions?ContactID=7f4477d1-8061-4be0-873d-ef38d69a4756&Status=APPROVED
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.14.2
+      Charset:
+      - utf-8
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Authorization:
+      - "<REDACTED>"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '916'
+      Xero-Correlation-Id:
+      - e7e68e1d-20f7-45ea-aac1-277016cdf6c5
+      X-Appminlimit-Remaining:
+      - '9988'
+      X-Minlimit-Remaining:
+      - '54'
+      X-Daylimit-Remaining:
+      - '987'
+      Xero-Tenant-Id:
+      - "<XERO_TENANT_ID>"
+      Server:
+      - tpzgw-c
+      Expires:
+      - Mon, 12 Oct 2026 12:04:28 GMT
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Date:
+      - Mon, 12 Oct 2026 12:04:28 GMT
+      Connection:
+      - keep-alive
+      X-Client-Tls-Ver:
+      - tls1.3
+    body:
+      encoding: UTF-8
+      string: "<Response xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n
+        \ <Id>e7e68e1d-20f7-45ea-aac1-277016cdf6c5</Id>\r\n  <Status>OK</Status>\r\n
+        \ <ProviderName>nnc-oauth2</ProviderName>\r\n  <DateTimeUTC>2026-10-12T12:04:28.6910162Z</DateTimeUTC>\r\n
+        \ <LinkedTransactions>\r\n    <LinkedTransaction>\r\n      <LinkedTransactionID>bc31f937-e083-40f9-9055-9be673678413</LinkedTransactionID>\r\n
+        \     <SourceTransactionID>1e47dc75-a80f-42fe-b86d-945ba8a1c974</SourceTransactionID>\r\n
+        \     <SourceLineItemID>906847c1-0d14-493d-a939-b2eb9b0c49c9</SourceLineItemID>\r\n
+        \     <ContactID>7f4477d1-8061-4be0-873d-ef38d69a4756</ContactID>\r\n      <Status>APPROVED</Status>\r\n
+        \     <Type>BILLABLEEXPENSE</Type>\r\n      <UpdatedDateUTC>2026-10-12T12:04:28</UpdatedDateUTC>\r\n
+        \     <SourceTransactionTypeCode>ACCPAY</SourceTransactionTypeCode>\r\n    </LinkedTransaction>\r\n
+        \ </LinkedTransactions>\r\n</Response>"
+  recorded_at: Mon, 12 Oct 2026 12:04:28 GMT
+recorded_with: VCR 6.4.0
