@@ -9,6 +9,7 @@ module Xeroizer
     class LinkedTransactionModel < BaseModel
       set_permissions :read, :write, :update
       set_xml_root_name 'LinkedTransactions'
+      set_get_options :SourceTransactionID, :ContactID, :TargetTransactionID, :status
     end
 
     class LinkedTransaction < Base
