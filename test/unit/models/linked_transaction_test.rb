@@ -167,6 +167,23 @@ class LinkedTransactionTest < Minitest::Test
         page: 2
       )
     end
+
+    # Guards against a misspelled filter being dropped and the call quietly
+    # returning every linked transaction in the organisation.
+    should 'raise on an unknown option instead of fetching unfiltered' do
+      @client.expects(:http_get).never
+
+      error = assert_raises(ArgumentError) { @client.LinkedTransaction.all(contact_id: CONTACT_ID) }
+      assert_equal 'Unknown option :contact_id for LinkedTransaction.all; ' \
+                   'allowed: :SourceTransactionID, :ContactID, :TargetTransactionID, :status, :page, :base_module',
+                   error.message
+    end
+
+    should 'raise from first as well' do
+      @client.expects(:http_get).never
+
+      assert_raises(ArgumentError) { @client.LinkedTransaction.first(where: 'Status=="APPROVED"') }
+    end
   end
 
   private

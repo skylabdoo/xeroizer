@@ -18,6 +18,10 @@ module Xeroizer
       class_inheritable_attributes :xml_root_name
       class_inheritable_attributes :optional_xml_root_name
       class_inheritable_attributes :xml_node_name
+      class_inheritable_attributes :get_options
+
+      # Options #all accepts on every model that declares its GET options.
+      COMMON_GET_OPTIONS = [:page, :base_module].freeze
 
       DEFAULT_RECORDS_PER_BATCH_SAVE = 50
 
@@ -73,6 +77,14 @@ module Xeroizer
           self.optional_xml_root_name = optional_root_name
         end
 
+        # Declare the option keys #all accepts. A model that declares them gets
+        # an ArgumentError for any other key, rather than the key being dropped
+        # and the request returning every record. Models that do not declare
+        # them accept anything, as before.
+        def set_get_options(*keys)
+          self.get_options = (keys.map(&:to_sym) + COMMON_GET_OPTIONS).uniq.freeze
+        end
+
       end
 
       public
@@ -124,6 +136,7 @@ module Xeroizer
       # Retrieve full record list for this model.
       def all(options = {})
         raise MethodNotAllowed.new(self, :all) unless self.class.permission?(:read)
+        check_get_options!(options)
         response_xml = http_get(parse_params(options))
         response = parse_response(response_xml, options)
         response.response_items || []
@@ -216,6 +229,18 @@ module Xeroizer
 
       protected
 
+
+      def check_get_options!(options)
+        allowed = self.class.get_options
+        return if allowed.nil?
+
+        unknown = options.keys.map(&:to_sym) - allowed
+        return if unknown.empty?
+
+        raise ArgumentError,
+              "Unknown option#{'s' if unknown.size > 1} #{unknown.map(&:inspect).join(', ')} for #{model_name}.all; " \
+              "allowed: #{allowed.map(&:inspect).join(', ')}"
+      end
 
       def paged_records_requested?(options)
         options.has_key?(:page) and options[:page].to_i >= 0
