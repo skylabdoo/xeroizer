@@ -179,6 +179,13 @@ class LinkedTransactionTest < Minitest::Test
                    error.message
     end
 
+    should 'raise on a string key, which parse_params would drop' do
+      @client.expects(:http_get).never
+
+      error = assert_raises(ArgumentError) { @client.LinkedTransaction.all('ContactID' => CONTACT_ID) }
+      assert_match(/\AUnknown option "ContactID" for LinkedTransaction\.all;/, error.message)
+    end
+
     should 'raise from first as well' do
       @client.expects(:http_get).never
 
