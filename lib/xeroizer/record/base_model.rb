@@ -279,7 +279,8 @@ module Xeroizer
         allowed = self.class.get_options
         return if allowed.nil?
 
-        unknown = options.keys.map(&:to_sym) - allowed
+        # String keys count as unknown: parse_params reads only symbol keys.
+        unknown = options.keys - allowed
         return if unknown.empty?
 
         raise ArgumentError,
