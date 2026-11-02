@@ -17,6 +17,8 @@ module Xeroizer
       string        :payment_type
       string        :status
       string        :reference
+      string        :particulars
+      string        :code
       datetime_utc  :updated_date_utc, api_name: 'UpdatedDateUTC'
       boolean       :is_reconciled
       string        :batch_payment_id

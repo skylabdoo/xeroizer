@@ -13,6 +13,8 @@ module Xeroizer
       guid    :batch_payment_id
       string  :reference
       string  :details
+      string  :particulars
+      string  :code
       date    :date
       string  :type
       string  :status
