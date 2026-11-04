@@ -281,6 +281,14 @@ class HttpTest < UnitTestCase
             assert_equal "<Response/>", result
           end
 
+          should "re-raise an OAuth2::Error whose response is a Hash, as for a blocked redirect" do
+            blocked = ::OAuth2::Error.new("error" => "cross_origin_redirect_blocked")
+            @application.client.stubs(:get).raises(blocked)
+
+            error = assert_raises(::OAuth2::Error) { @application.http_get(@application.client, @uri) }
+            assert_same blocked, error
+          end
+
           context "when rate_limit_sleep is a number" do
             setup do
               @application = Xeroizer::OAuth2Application.new(

@@ -132,7 +132,10 @@ module Xeroizer
         # This rescue intercepts those raw OAuth2::Error exceptions, converts
         # 429s to RateLimitExceeded, and feeds them through the same retry
         # logic so rate_limit_sleep works regardless of raise_errors setting.
-        raise unless exception.response && exception.response.status == 429
+        #
+        # oauth2 raises some errors from a Hash rather than a response, such as
+        # a blocked cross-origin redirect, so not every response has a status.
+        raise unless exception.response.respond_to?(:status) && exception.response.status == 429
 
         # Run the same observability hooks the raise_errors:false path runs,
         # so log_response/after_request fire for both modes symmetrically.
